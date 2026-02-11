@@ -1,0 +1,99 @@
+{
+  "name": "@korekoi/react-native-google-places",
+  "version": "0.0.1",
+  "description": "A React Native library for Google Places API, providing geocoding, autocomplete, and more.",
+  "main": "lib/index",
+  "module": "lib/index",
+  "types": "lib/index.d.ts",
+  "react-native": "src/index",
+  "source": "src/index",
+  "files": [
+    "src",
+    "react-native.config.js",
+    "lib",
+    "nitrogen",
+    "android/build.gradle",
+    "android/gradle.properties",
+    "android/fix-prefab.gradle",
+    "android/CMakeLists.txt",
+    "android/src",
+    "ios/**/*.h",
+    "ios/**/*.m",
+    "ios/**/*.mm",
+    "ios/**/*.cpp",
+    "ios/**/*.swift",
+    "plugin",
+    "app.plugin.js",
+    "nitro.json",
+    "*.podspec",
+    "README.md"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf android/build node_modules/**/android/build lib",
+    "lint": "eslint \"**/*.{js,ts,tsx}\" --fix",
+    "lint-ci": "eslint \"**/*.{js,ts,tsx}\" -f @jamesacarr/github-actions",
+    "typescript": "tsc",
+    "specs": "tsc --noEmit false && nitrogen --logLevel=\"debug\"",
+    "plugin-build": "esbuild plugin/src/withPlaces.ts --platform=node --target=node18 --format=cjs --outfile=plugin/build/withPlaces.js"
+  },
+  "keywords": [
+    "react-native",
+    "nitro",
+    "google",
+    "places",
+    "maps",
+    "location",
+    "geocoding",
+    "geolocation",
+    "autocomplete",
+    "search",
+    "navigation",
+    "directions",
+    "distance",
+    "duration",
+    "api",
+    "sdk",
+    "library",
+    "module",
+    "plugin",
+    "expo"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrousavy/nitro.git"
+  },
+  "author": "Marc Rousavy <me@mrousavy.com> (https://github.com/mrousavy)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mrousavy/nitro/issues"
+  },
+  "homepage": "https://github.com/mrousavy/nitro#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@stylistic/eslint-plugin": "^5.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.4",
+    "@expo/config-plugins": "^54.0.4",
+    "@react-native/eslint-config": "0.83.0",
+    "@types/react": "^19.1.03",
+    "esbuild": "^0.27.3",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "nitrogen": "*",
+    "prettier": "^3.3.3",
+    "react": "19.2.0",
+    "react-native": "0.83.0",
+    "react-native-nitro-modules": "*",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.46.4"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*",
+    "react-native-nitro-modules": "*"
+  }
+}

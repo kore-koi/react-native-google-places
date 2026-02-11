@@ -1,0 +1,24 @@
+{
+  "$schema": "https://nitro.margelo.com/nitro.schema.json",
+  "cxxNamespace": [
+    "googleplaces"
+  ],
+  "ios": {
+    "iosModuleName": "NitroGooglePlaces"
+  },
+  "android": {
+    "androidNamespace": [
+      "googleplaces"
+    ],
+    "androidCxxLibName": "NitroGooglePlaces"
+  },
+  "autolinking": {
+    "Places": {
+      "swift": "HybridPlaces",
+      "kotlin": "HybridPlaces"
+    }
+  },
+  "ignorePaths": [
+    "**/node_modules"
+  ]
+}
