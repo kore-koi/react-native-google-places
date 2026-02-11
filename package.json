@@ -61,14 +61,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mrousavy/nitro.git"
+    "url": "git+https://github.com/kore-koi/react-native-google-places.git"
   },
-  "author": "Marc Rousavy <me@mrousavy.com> (https://github.com/mrousavy)",
+  "author": "Mattia Ferrari <mattia.ferrari@gmail.com> (https://github.com/kore-koi)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mrousavy/nitro/issues"
+    "url": "https://github.com/kore-koi/react-native-google-places/issues"
   },
-  "homepage": "https://github.com/mrousavy/nitro#readme",
+  "homepage": "https://github.com/kore-koi/react-native-google-places#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
