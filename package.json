@@ -35,7 +35,7 @@
     "lint-ci": "eslint \"**/*.{js,ts,tsx}\" -f @jamesacarr/github-actions",
     "build": "tsc",
     "specs": "tsc --noEmit false && nitrogen --logLevel=\"debug\"",
-    "plugin-build": "esbuild plugin/src/withPlaces.ts --platform=node --target=node18 --format=cjs --outfile=plugin/build/withPlaces.js"
+    "plugin-build": "esbuild plugin/src/withPlaces.ts --platform=node --target=node18 --format=cjs --outfile=plugin/build/withPlaces.js && tsc plugin/src/withPlaces.ts --declaration --emitDeclarationOnly --outDir plugin/build"
   },
   "keywords": [
     "react-native",

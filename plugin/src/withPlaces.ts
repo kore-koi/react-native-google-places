@@ -1,11 +1,6 @@
 import { ConfigPlugin, withAndroidManifest, withInfoPlist } from '@expo/config-plugins'
 import { addMetaDataItemToMainApplication, getMainApplicationOrThrow } from '@expo/config-plugins/build/android/Manifest.js';
 
-type Props = {
-  iosApiKey?: string | null
-  androidApiKey?: string | null
-}
-
 export const withAndroidApiKey: ConfigPlugin<{ androidApiKey?: string | null }> = (
   config,
   { androidApiKey }
@@ -32,7 +27,7 @@ export const withIosApiKey: ConfigPlugin<{ iosApiKey?: string | null }> = (confi
   })
 }
 
-const withGooglePlaces: ConfigPlugin<Props> = (config, { androidApiKey = null, iosApiKey = null }) => {
+const withGooglePlaces: ConfigPlugin<{ androidApiKey?: string | null; iosApiKey?: string | null }> = (config, { androidApiKey = null, iosApiKey = null }) => {
   config = withAndroidApiKey(config, { androidApiKey })
   config = withIosApiKey(config, { iosApiKey })
   return config;
