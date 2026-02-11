@@ -38,9 +38,11 @@ const withAndroidApiKey = (config, { androidApiKey }) => {
     return config2;
   });
 };
-const withIosApiKey = (config, props) => {
+const withIosApiKey = (config, { iosApiKey }) => {
   return (0, import_config_plugins.withInfoPlist)(config, (config2) => {
-    config2.modResults.GMSPlacesAPIKey = props.iosApiKey;
+    if (iosApiKey) {
+      config2.modResults.GMSPlacesAPIKey = iosApiKey;
+    }
     return config2;
   });
 };

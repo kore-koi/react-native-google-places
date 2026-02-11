@@ -20,9 +20,11 @@ export const withAndroidApiKey: ConfigPlugin<{ androidApiKey?: string | null }> 
   })
 }
 
-export const withIosApiKey: ConfigPlugin<{ iosApiKey?: string | null }> = (config, props) => {
+export const withIosApiKey: ConfigPlugin<{ iosApiKey?: string | null }> = (config, { iosApiKey }) => {
   return withInfoPlist(config, (config) => {
-    config.modResults.GMSPlacesAPIKey = props.iosApiKey
+    if (iosApiKey) {
+      config.modResults.GMSPlacesAPIKey = iosApiKey
+    }
     return config
   })
 }
