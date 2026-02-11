@@ -81,3 +81,4 @@ lib/
 .eslintcache
 .cache
 *.tsbuildinfo
+!plugin/build
