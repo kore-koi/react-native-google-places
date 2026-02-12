@@ -41,7 +41,7 @@ class HybridPlaces : HybridPlacesSpec {
                 results?.map { prediction in
                   return PlaceAutocompleteResult(
                     placeId: prediction.placeID,
-                    label: prediction.attributedFullText.string,
+                    label: prediction.attributedFullText.string
                   )
                 } ?? []
 
