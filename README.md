@@ -3,7 +3,7 @@
 Nitro wrapper around the Google Places SDK with a single API for address autocomplete.
 
 ## Reasons to use this module:
-- You can use safely a restricted API key in your app without worrying about it being leaked, as the SDK handles all network requests internally.
+- You can now use the Google Places SDK in your React Native app providing a restricted API key on your bundle identifiers so that you don't have to expose an open API key to the public.
 - The module provides a simple API for address autocomplete, returning only the place ID and a display string for UI
 
 ## Install
