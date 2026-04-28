@@ -30,6 +30,14 @@ namespace margelo::nitro::googleplaces::bridge::swift {
     };
   }
   
+  // pragma MARK: std::function<void(const std::variant<nitro::NullType, std::shared_ptr<AnyMap>>& /* result */)>
+  Func_void_std__variant_nitro__NullType__std__shared_ptr_AnyMap__ create_Func_void_std__variant_nitro__NullType__std__shared_ptr_AnyMap__(void* NON_NULL swiftClosureWrapper) noexcept {
+    auto swiftClosure = NitroGooglePlaces::Func_void_std__variant_nitro__NullType__std__shared_ptr_AnyMap__::fromUnsafe(swiftClosureWrapper);
+    return [swiftClosure = std::move(swiftClosure)](const std::variant<nitro::NullType, std::shared_ptr<AnyMap>>& result) mutable -> void {
+      swiftClosure.call(result);
+    };
+  }
+  
   // pragma MARK: std::shared_ptr<HybridPlacesSpec>
   std::shared_ptr<HybridPlacesSpec> create_std__shared_ptr_HybridPlacesSpec_(void* NON_NULL swiftUnsafePointer) noexcept {
     NitroGooglePlaces::HybridPlacesSpec_cxx swiftPart = NitroGooglePlaces::HybridPlacesSpec_cxx::fromUnsafe(swiftUnsafePointer);

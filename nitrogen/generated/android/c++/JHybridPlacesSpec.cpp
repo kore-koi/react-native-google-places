@@ -16,6 +16,12 @@ namespace margelo::nitro::googleplaces { struct PlaceAutocompleteResult; }
 #include <NitroModules/JPromise.hpp>
 #include "JPlaceAutocompleteResult.hpp"
 #include <string>
+#include <NitroModules/Null.hpp>
+#include <NitroModules/AnyMap.hpp>
+#include <variant>
+#include "JVariant_NullType_AnyMap.hpp"
+#include <NitroModules/JNull.hpp>
+#include <NitroModules/JAnyMap.hpp>
 
 namespace margelo::nitro::googleplaces {
 
@@ -73,6 +79,22 @@ namespace margelo::nitro::googleplaces {
           }
           return __vector;
         }());
+      });
+      __result->cthis()->addOnRejectedListener([=](const jni::alias_ref<jni::JThrowable>& __throwable) {
+        jni::JniException __jniError(__throwable);
+        __promise->reject(std::make_exception_ptr(__jniError));
+      });
+      return __promise;
+    }();
+  }
+  std::shared_ptr<Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>> JHybridPlacesSpec::getPlace(const std::string& placeId) {
+    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<jni::JString> /* placeId */)>("getPlace");
+    auto __result = method(_javaPart, jni::make_jstring(placeId));
+    return [&]() {
+      auto __promise = Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>::create();
+      __result->cthis()->addOnResolvedListener([=](const jni::alias_ref<jni::JObject>& __boxedResult) {
+        auto __result = jni::static_ref_cast<JVariant_NullType_AnyMap>(__boxedResult);
+        __promise->resolve(__result->toCpp());
       });
       __result->cthis()->addOnRejectedListener([=](const jni::alias_ref<jni::JThrowable>& __throwable) {
         jni::JniException __jniError(__throwable);

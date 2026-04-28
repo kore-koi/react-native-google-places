@@ -1,4 +1,4 @@
-import { type HybridObject } from "react-native-nitro-modules"
+import { type AnyMap, type HybridObject } from "react-native-nitro-modules"
 
 interface PlaceAutocompleteResult {
   placeId: string
@@ -10,4 +10,5 @@ export interface Places extends HybridObject<{
   android: "kotlin"
 }> {
   autocomplete(query: string): Promise<PlaceAutocompleteResult[]>
+  getPlace(placeId: string): Promise<AnyMap | null>
 }

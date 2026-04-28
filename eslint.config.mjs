@@ -25,7 +25,8 @@ export default defineConfig(
     "react-native.config.js",
     "lib",
     "plugin",
-    "app.plugin.js"
+    "app.plugin.js",
+    "ExampleApp"
   ]),
   {
     plugins: {

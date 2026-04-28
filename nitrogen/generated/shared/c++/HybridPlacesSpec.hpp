@@ -20,6 +20,9 @@ namespace margelo::nitro::googleplaces { struct PlaceAutocompleteResult; }
 #include <vector>
 #include <NitroModules/Promise.hpp>
 #include <string>
+#include <NitroModules/Null.hpp>
+#include <NitroModules/AnyMap.hpp>
+#include <variant>
 
 namespace margelo::nitro::googleplaces {
 
@@ -53,6 +56,7 @@ namespace margelo::nitro::googleplaces {
     public:
       // Methods
       virtual std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> autocomplete(const std::string& query) = 0;
+      virtual std::shared_ptr<Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>> getPlace(const std::string& placeId) = 0;
 
     protected:
       // Hybrid Setup

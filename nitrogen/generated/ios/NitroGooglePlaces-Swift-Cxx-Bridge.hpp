@@ -20,6 +20,8 @@ namespace NitroGooglePlaces { class HybridPlacesSpec_cxx; }
 // Include C++ defined types
 #include "HybridPlacesSpec.hpp"
 #include "PlaceAutocompleteResult.hpp"
+#include <NitroModules/AnyMap.hpp>
+#include <NitroModules/Null.hpp>
 #include <NitroModules/Promise.hpp>
 #include <NitroModules/PromiseHolder.hpp>
 #include <NitroModules/Result.hpp>
@@ -27,6 +29,7 @@ namespace NitroGooglePlaces { class HybridPlacesSpec_cxx; }
 #include <functional>
 #include <memory>
 #include <string>
+#include <variant>
 #include <vector>
 
 /**
@@ -102,6 +105,69 @@ namespace margelo::nitro::googleplaces::bridge::swift {
     return Func_void_std__exception_ptr_Wrapper(std::move(value));
   }
   
+  // pragma MARK: std::variant<nitro::NullType, std::shared_ptr<AnyMap>>
+  /**
+   * Wrapper struct for `std::variant<nitro::NullType, std::shared_ptr<AnyMap>>`.
+   * std::variant cannot be used in Swift because of a Swift bug.
+   * Not even specializing it works. So we create a wrapper struct.
+   */
+  struct std__variant_nitro__NullType__std__shared_ptr_AnyMap__ final {
+    std::variant<nitro::NullType, std::shared_ptr<AnyMap>> variant;
+    std__variant_nitro__NullType__std__shared_ptr_AnyMap__(std::variant<nitro::NullType, std::shared_ptr<AnyMap>> variant): variant(variant) { }
+    operator std::variant<nitro::NullType, std::shared_ptr<AnyMap>>() const noexcept {
+      return variant;
+    }
+    inline size_t index() const noexcept {
+      return variant.index();
+    }
+    inline nitro::NullType get_0() const noexcept {
+      return std::get<0>(variant);
+    }
+    inline std::shared_ptr<AnyMap> get_1() const noexcept {
+      return std::get<1>(variant);
+    }
+  };
+  inline std__variant_nitro__NullType__std__shared_ptr_AnyMap__ create_std__variant_nitro__NullType__std__shared_ptr_AnyMap__(nitro::NullType value) noexcept {
+    return std__variant_nitro__NullType__std__shared_ptr_AnyMap__(value);
+  }
+  inline std__variant_nitro__NullType__std__shared_ptr_AnyMap__ create_std__variant_nitro__NullType__std__shared_ptr_AnyMap__(const std::shared_ptr<AnyMap>& value) noexcept {
+    return std__variant_nitro__NullType__std__shared_ptr_AnyMap__(value);
+  }
+  
+  // pragma MARK: std::shared_ptr<Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>>
+  /**
+   * Specialized version of `std::shared_ptr<Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>>`.
+   */
+  using std__shared_ptr_Promise_std__variant_nitro__NullType__std__shared_ptr_AnyMap____ = std::shared_ptr<Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>>;
+  inline std::shared_ptr<Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>> create_std__shared_ptr_Promise_std__variant_nitro__NullType__std__shared_ptr_AnyMap____() noexcept {
+    return Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>::create();
+  }
+  inline PromiseHolder<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>> wrap_std__shared_ptr_Promise_std__variant_nitro__NullType__std__shared_ptr_AnyMap____(std::shared_ptr<Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>> promise) noexcept {
+    return PromiseHolder<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>(std::move(promise));
+  }
+  
+  // pragma MARK: std::function<void(const std::variant<nitro::NullType, std::shared_ptr<AnyMap>>& /* result */)>
+  /**
+   * Specialized version of `std::function<void(const std::variant<nitro::NullType, std::shared_ptr<AnyMap>>&)>`.
+   */
+  using Func_void_std__variant_nitro__NullType__std__shared_ptr_AnyMap__ = std::function<void(const std::variant<nitro::NullType, std::shared_ptr<AnyMap>>& /* result */)>;
+  /**
+   * Wrapper class for a `std::function<void(const std::variant<nitro::NullType, std::shared_ptr<AnyMap>>& / * result * /)>`, this can be used from Swift.
+   */
+  class Func_void_std__variant_nitro__NullType__std__shared_ptr_AnyMap___Wrapper final {
+  public:
+    explicit Func_void_std__variant_nitro__NullType__std__shared_ptr_AnyMap___Wrapper(std::function<void(const std::variant<nitro::NullType, std::shared_ptr<AnyMap>>& /* result */)>&& func): _function(std::make_unique<std::function<void(const std::variant<nitro::NullType, std::shared_ptr<AnyMap>>& /* result */)>>(std::move(func))) {}
+    inline void call(std::variant<nitro::NullType, std::shared_ptr<AnyMap>> result) const noexcept {
+      _function->operator()(result);
+    }
+  private:
+    std::unique_ptr<std::function<void(const std::variant<nitro::NullType, std::shared_ptr<AnyMap>>& /* result */)>> _function;
+  } SWIFT_NONCOPYABLE;
+  Func_void_std__variant_nitro__NullType__std__shared_ptr_AnyMap__ create_Func_void_std__variant_nitro__NullType__std__shared_ptr_AnyMap__(void* NON_NULL swiftClosureWrapper) noexcept;
+  inline Func_void_std__variant_nitro__NullType__std__shared_ptr_AnyMap___Wrapper wrap_Func_void_std__variant_nitro__NullType__std__shared_ptr_AnyMap__(Func_void_std__variant_nitro__NullType__std__shared_ptr_AnyMap__ value) noexcept {
+    return Func_void_std__variant_nitro__NullType__std__shared_ptr_AnyMap___Wrapper(std::move(value));
+  }
+  
   // pragma MARK: std::shared_ptr<HybridPlacesSpec>
   /**
    * Specialized version of `std::shared_ptr<HybridPlacesSpec>`.
@@ -121,6 +187,15 @@ namespace margelo::nitro::googleplaces::bridge::swift {
   }
   inline Result_std__shared_ptr_Promise_std__vector_PlaceAutocompleteResult____ create_Result_std__shared_ptr_Promise_std__vector_PlaceAutocompleteResult____(const std::exception_ptr& error) noexcept {
     return Result<std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>>>::withError(error);
+  }
+  
+  // pragma MARK: Result<std::shared_ptr<Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>>>
+  using Result_std__shared_ptr_Promise_std__variant_nitro__NullType__std__shared_ptr_AnyMap_____ = Result<std::shared_ptr<Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>>>;
+  inline Result_std__shared_ptr_Promise_std__variant_nitro__NullType__std__shared_ptr_AnyMap_____ create_Result_std__shared_ptr_Promise_std__variant_nitro__NullType__std__shared_ptr_AnyMap_____(const std::shared_ptr<Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>>& value) noexcept {
+    return Result<std::shared_ptr<Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>>>::withValue(value);
+  }
+  inline Result_std__shared_ptr_Promise_std__variant_nitro__NullType__std__shared_ptr_AnyMap_____ create_Result_std__shared_ptr_Promise_std__variant_nitro__NullType__std__shared_ptr_AnyMap_____(const std::exception_ptr& error) noexcept {
+    return Result<std::shared_ptr<Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>>>::withError(error);
   }
 
 } // namespace margelo::nitro::googleplaces::bridge::swift

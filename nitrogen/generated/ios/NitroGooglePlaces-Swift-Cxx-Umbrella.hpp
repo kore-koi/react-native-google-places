@@ -16,11 +16,14 @@ namespace margelo::nitro::googleplaces { struct PlaceAutocompleteResult; }
 // Include C++ defined types
 #include "HybridPlacesSpec.hpp"
 #include "PlaceAutocompleteResult.hpp"
+#include <NitroModules/AnyMap.hpp>
+#include <NitroModules/Null.hpp>
 #include <NitroModules/Promise.hpp>
 #include <NitroModules/Result.hpp>
 #include <exception>
 #include <memory>
 #include <string>
+#include <variant>
 #include <vector>
 
 // C++ helpers for Swift

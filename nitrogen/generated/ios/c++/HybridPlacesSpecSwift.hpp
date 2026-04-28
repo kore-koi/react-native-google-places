@@ -19,6 +19,9 @@ namespace margelo::nitro::googleplaces { struct PlaceAutocompleteResult; }
 #include <vector>
 #include <NitroModules/Promise.hpp>
 #include <string>
+#include <NitroModules/Null.hpp>
+#include <NitroModules/AnyMap.hpp>
+#include <variant>
 
 #include "NitroGooglePlaces-Swift-Cxx-Umbrella.hpp"
 
@@ -72,6 +75,14 @@ namespace margelo::nitro::googleplaces {
     // Methods
     inline std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> autocomplete(const std::string& query) override {
       auto __result = _swiftPart.autocomplete(query);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+      auto __value = std::move(__result.value());
+      return __value;
+    }
+    inline std::shared_ptr<Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>> getPlace(const std::string& placeId) override {
+      auto __result = _swiftPart.getPlace(placeId);
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }
