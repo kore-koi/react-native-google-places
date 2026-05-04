@@ -15,11 +15,17 @@
 
 // Forward declaration of `PlaceAutocompleteResult` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct PlaceAutocompleteResult; }
+// Forward declaration of `PlaceDetails` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct PlaceDetails; }
 
 #include "PlaceAutocompleteResult.hpp"
 #include <vector>
 #include <NitroModules/Promise.hpp>
 #include <string>
+#include <optional>
+#include <NitroModules/Null.hpp>
+#include "PlaceDetails.hpp"
+#include <variant>
 
 namespace margelo::nitro::googleplaces {
 
@@ -52,7 +58,9 @@ namespace margelo::nitro::googleplaces {
 
     public:
       // Methods
-      virtual std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> autocomplete(const std::string& query) = 0;
+      virtual std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> autocomplete(const std::string& query, std::optional<double> lat, std::optional<double> lng, std::optional<double> radius) = 0;
+      virtual std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>> getPlace(const std::string& placeId) = 0;
+      virtual std::shared_ptr<Promise<std::vector<PlaceDetails>>> autocompleteWithDetails(const std::string& query, std::optional<double> lat, std::optional<double> lng, std::optional<double> radius) = 0;
 
     protected:
       // Hybrid Setup

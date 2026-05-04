@@ -30,6 +30,22 @@ namespace margelo::nitro::googleplaces::bridge::swift {
     };
   }
   
+  // pragma MARK: std::function<void(const std::variant<nitro::NullType, PlaceDetails>& /* result */)>
+  Func_void_std__variant_nitro__NullType__PlaceDetails_ create_Func_void_std__variant_nitro__NullType__PlaceDetails_(void* NON_NULL swiftClosureWrapper) noexcept {
+    auto swiftClosure = NitroGooglePlaces::Func_void_std__variant_nitro__NullType__PlaceDetails_::fromUnsafe(swiftClosureWrapper);
+    return [swiftClosure = std::move(swiftClosure)](const std::variant<nitro::NullType, PlaceDetails>& result) mutable -> void {
+      swiftClosure.call(result);
+    };
+  }
+  
+  // pragma MARK: std::function<void(const std::vector<PlaceDetails>& /* result */)>
+  Func_void_std__vector_PlaceDetails_ create_Func_void_std__vector_PlaceDetails_(void* NON_NULL swiftClosureWrapper) noexcept {
+    auto swiftClosure = NitroGooglePlaces::Func_void_std__vector_PlaceDetails_::fromUnsafe(swiftClosureWrapper);
+    return [swiftClosure = std::move(swiftClosure)](const std::vector<PlaceDetails>& result) mutable -> void {
+      swiftClosure.call(result);
+    };
+  }
+  
   // pragma MARK: std::shared_ptr<HybridPlacesSpec>
   std::shared_ptr<HybridPlacesSpec> create_std__shared_ptr_HybridPlacesSpec_(void* NON_NULL swiftUnsafePointer) noexcept {
     NitroGooglePlaces::HybridPlacesSpec_cxx swiftPart = NitroGooglePlaces::HybridPlacesSpec_cxx::fromUnsafe(swiftUnsafePointer);

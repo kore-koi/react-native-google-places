@@ -8,25 +8,34 @@
 #pragma once
 
 // Forward declarations of C++ defined types
+// Forward declaration of `AddressComponent` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct AddressComponent; }
 // Forward declaration of `HybridPlacesSpec` to properly resolve imports.
 namespace margelo::nitro::googleplaces { class HybridPlacesSpec; }
 // Forward declaration of `PlaceAutocompleteResult` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct PlaceAutocompleteResult; }
+// Forward declaration of `PlaceDetails` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct PlaceDetails; }
 
 // Forward declarations of Swift defined types
 // Forward declaration of `HybridPlacesSpec_cxx` to properly resolve imports.
 namespace NitroGooglePlaces { class HybridPlacesSpec_cxx; }
 
 // Include C++ defined types
+#include "AddressComponent.hpp"
 #include "HybridPlacesSpec.hpp"
 #include "PlaceAutocompleteResult.hpp"
+#include "PlaceDetails.hpp"
+#include <NitroModules/Null.hpp>
 #include <NitroModules/Promise.hpp>
 #include <NitroModules/PromiseHolder.hpp>
 #include <NitroModules/Result.hpp>
 #include <exception>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <string>
+#include <variant>
 #include <vector>
 
 /**
@@ -102,6 +111,151 @@ namespace margelo::nitro::googleplaces::bridge::swift {
     return Func_void_std__exception_ptr_Wrapper(std::move(value));
   }
   
+  // pragma MARK: std::optional<double>
+  /**
+   * Specialized version of `std::optional<double>`.
+   */
+  using std__optional_double_ = std::optional<double>;
+  inline std::optional<double> create_std__optional_double_(const double& value) noexcept {
+    return std::optional<double>(value);
+  }
+  inline bool has_value_std__optional_double_(const std::optional<double>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline double get_std__optional_double_(const std::optional<double>& optional) noexcept {
+    return *optional;
+  }
+  
+  // pragma MARK: std::vector<std::string>
+  /**
+   * Specialized version of `std::vector<std::string>`.
+   */
+  using std__vector_std__string_ = std::vector<std::string>;
+  inline std::vector<std::string> create_std__vector_std__string_(size_t size) noexcept {
+    std::vector<std::string> vector;
+    vector.reserve(size);
+    return vector;
+  }
+  
+  // pragma MARK: std::vector<AddressComponent>
+  /**
+   * Specialized version of `std::vector<AddressComponent>`.
+   */
+  using std__vector_AddressComponent_ = std::vector<AddressComponent>;
+  inline std::vector<AddressComponent> create_std__vector_AddressComponent_(size_t size) noexcept {
+    std::vector<AddressComponent> vector;
+    vector.reserve(size);
+    return vector;
+  }
+  
+  // pragma MARK: std::variant<nitro::NullType, PlaceDetails>
+  /**
+   * Wrapper struct for `std::variant<nitro::NullType, PlaceDetails>`.
+   * std::variant cannot be used in Swift because of a Swift bug.
+   * Not even specializing it works. So we create a wrapper struct.
+   */
+  struct std__variant_nitro__NullType__PlaceDetails_ final {
+    std::variant<nitro::NullType, PlaceDetails> variant;
+    std__variant_nitro__NullType__PlaceDetails_(std::variant<nitro::NullType, PlaceDetails> variant): variant(variant) { }
+    operator std::variant<nitro::NullType, PlaceDetails>() const noexcept {
+      return variant;
+    }
+    inline size_t index() const noexcept {
+      return variant.index();
+    }
+    inline nitro::NullType get_0() const noexcept {
+      return std::get<0>(variant);
+    }
+    inline PlaceDetails get_1() const noexcept {
+      return std::get<1>(variant);
+    }
+  };
+  inline std__variant_nitro__NullType__PlaceDetails_ create_std__variant_nitro__NullType__PlaceDetails_(nitro::NullType value) noexcept {
+    return std__variant_nitro__NullType__PlaceDetails_(value);
+  }
+  inline std__variant_nitro__NullType__PlaceDetails_ create_std__variant_nitro__NullType__PlaceDetails_(const PlaceDetails& value) noexcept {
+    return std__variant_nitro__NullType__PlaceDetails_(value);
+  }
+  
+  // pragma MARK: std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>>
+  /**
+   * Specialized version of `std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>>`.
+   */
+  using std__shared_ptr_Promise_std__variant_nitro__NullType__PlaceDetails___ = std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>>;
+  inline std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>> create_std__shared_ptr_Promise_std__variant_nitro__NullType__PlaceDetails___() noexcept {
+    return Promise<std::variant<nitro::NullType, PlaceDetails>>::create();
+  }
+  inline PromiseHolder<std::variant<nitro::NullType, PlaceDetails>> wrap_std__shared_ptr_Promise_std__variant_nitro__NullType__PlaceDetails___(std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>> promise) noexcept {
+    return PromiseHolder<std::variant<nitro::NullType, PlaceDetails>>(std::move(promise));
+  }
+  
+  // pragma MARK: std::function<void(const std::variant<nitro::NullType, PlaceDetails>& /* result */)>
+  /**
+   * Specialized version of `std::function<void(const std::variant<nitro::NullType, PlaceDetails>&)>`.
+   */
+  using Func_void_std__variant_nitro__NullType__PlaceDetails_ = std::function<void(const std::variant<nitro::NullType, PlaceDetails>& /* result */)>;
+  /**
+   * Wrapper class for a `std::function<void(const std::variant<nitro::NullType, PlaceDetails>& / * result * /)>`, this can be used from Swift.
+   */
+  class Func_void_std__variant_nitro__NullType__PlaceDetails__Wrapper final {
+  public:
+    explicit Func_void_std__variant_nitro__NullType__PlaceDetails__Wrapper(std::function<void(const std::variant<nitro::NullType, PlaceDetails>& /* result */)>&& func): _function(std::make_unique<std::function<void(const std::variant<nitro::NullType, PlaceDetails>& /* result */)>>(std::move(func))) {}
+    inline void call(std::variant<nitro::NullType, PlaceDetails> result) const noexcept {
+      _function->operator()(result);
+    }
+  private:
+    std::unique_ptr<std::function<void(const std::variant<nitro::NullType, PlaceDetails>& /* result */)>> _function;
+  } SWIFT_NONCOPYABLE;
+  Func_void_std__variant_nitro__NullType__PlaceDetails_ create_Func_void_std__variant_nitro__NullType__PlaceDetails_(void* NON_NULL swiftClosureWrapper) noexcept;
+  inline Func_void_std__variant_nitro__NullType__PlaceDetails__Wrapper wrap_Func_void_std__variant_nitro__NullType__PlaceDetails_(Func_void_std__variant_nitro__NullType__PlaceDetails_ value) noexcept {
+    return Func_void_std__variant_nitro__NullType__PlaceDetails__Wrapper(std::move(value));
+  }
+  
+  // pragma MARK: std::vector<PlaceDetails>
+  /**
+   * Specialized version of `std::vector<PlaceDetails>`.
+   */
+  using std__vector_PlaceDetails_ = std::vector<PlaceDetails>;
+  inline std::vector<PlaceDetails> create_std__vector_PlaceDetails_(size_t size) noexcept {
+    std::vector<PlaceDetails> vector;
+    vector.reserve(size);
+    return vector;
+  }
+  
+  // pragma MARK: std::shared_ptr<Promise<std::vector<PlaceDetails>>>
+  /**
+   * Specialized version of `std::shared_ptr<Promise<std::vector<PlaceDetails>>>`.
+   */
+  using std__shared_ptr_Promise_std__vector_PlaceDetails___ = std::shared_ptr<Promise<std::vector<PlaceDetails>>>;
+  inline std::shared_ptr<Promise<std::vector<PlaceDetails>>> create_std__shared_ptr_Promise_std__vector_PlaceDetails___() noexcept {
+    return Promise<std::vector<PlaceDetails>>::create();
+  }
+  inline PromiseHolder<std::vector<PlaceDetails>> wrap_std__shared_ptr_Promise_std__vector_PlaceDetails___(std::shared_ptr<Promise<std::vector<PlaceDetails>>> promise) noexcept {
+    return PromiseHolder<std::vector<PlaceDetails>>(std::move(promise));
+  }
+  
+  // pragma MARK: std::function<void(const std::vector<PlaceDetails>& /* result */)>
+  /**
+   * Specialized version of `std::function<void(const std::vector<PlaceDetails>&)>`.
+   */
+  using Func_void_std__vector_PlaceDetails_ = std::function<void(const std::vector<PlaceDetails>& /* result */)>;
+  /**
+   * Wrapper class for a `std::function<void(const std::vector<PlaceDetails>& / * result * /)>`, this can be used from Swift.
+   */
+  class Func_void_std__vector_PlaceDetails__Wrapper final {
+  public:
+    explicit Func_void_std__vector_PlaceDetails__Wrapper(std::function<void(const std::vector<PlaceDetails>& /* result */)>&& func): _function(std::make_unique<std::function<void(const std::vector<PlaceDetails>& /* result */)>>(std::move(func))) {}
+    inline void call(std::vector<PlaceDetails> result) const noexcept {
+      _function->operator()(result);
+    }
+  private:
+    std::unique_ptr<std::function<void(const std::vector<PlaceDetails>& /* result */)>> _function;
+  } SWIFT_NONCOPYABLE;
+  Func_void_std__vector_PlaceDetails_ create_Func_void_std__vector_PlaceDetails_(void* NON_NULL swiftClosureWrapper) noexcept;
+  inline Func_void_std__vector_PlaceDetails__Wrapper wrap_Func_void_std__vector_PlaceDetails_(Func_void_std__vector_PlaceDetails_ value) noexcept {
+    return Func_void_std__vector_PlaceDetails__Wrapper(std::move(value));
+  }
+  
   // pragma MARK: std::shared_ptr<HybridPlacesSpec>
   /**
    * Specialized version of `std::shared_ptr<HybridPlacesSpec>`.
@@ -121,6 +275,24 @@ namespace margelo::nitro::googleplaces::bridge::swift {
   }
   inline Result_std__shared_ptr_Promise_std__vector_PlaceAutocompleteResult____ create_Result_std__shared_ptr_Promise_std__vector_PlaceAutocompleteResult____(const std::exception_ptr& error) noexcept {
     return Result<std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>>>::withError(error);
+  }
+  
+  // pragma MARK: Result<std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>>>
+  using Result_std__shared_ptr_Promise_std__variant_nitro__NullType__PlaceDetails____ = Result<std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>>>;
+  inline Result_std__shared_ptr_Promise_std__variant_nitro__NullType__PlaceDetails____ create_Result_std__shared_ptr_Promise_std__variant_nitro__NullType__PlaceDetails____(const std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>>& value) noexcept {
+    return Result<std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>>>::withValue(value);
+  }
+  inline Result_std__shared_ptr_Promise_std__variant_nitro__NullType__PlaceDetails____ create_Result_std__shared_ptr_Promise_std__variant_nitro__NullType__PlaceDetails____(const std::exception_ptr& error) noexcept {
+    return Result<std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>>>::withError(error);
+  }
+  
+  // pragma MARK: Result<std::shared_ptr<Promise<std::vector<PlaceDetails>>>>
+  using Result_std__shared_ptr_Promise_std__vector_PlaceDetails____ = Result<std::shared_ptr<Promise<std::vector<PlaceDetails>>>>;
+  inline Result_std__shared_ptr_Promise_std__vector_PlaceDetails____ create_Result_std__shared_ptr_Promise_std__vector_PlaceDetails____(const std::shared_ptr<Promise<std::vector<PlaceDetails>>>& value) noexcept {
+    return Result<std::shared_ptr<Promise<std::vector<PlaceDetails>>>>::withValue(value);
+  }
+  inline Result_std__shared_ptr_Promise_std__vector_PlaceDetails____ create_Result_std__shared_ptr_Promise_std__vector_PlaceDetails____(const std::exception_ptr& error) noexcept {
+    return Result<std::shared_ptr<Promise<std::vector<PlaceDetails>>>>::withError(error);
   }
 
 } // namespace margelo::nitro::googleplaces::bridge::swift

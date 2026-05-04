@@ -15,6 +15,8 @@ namespace margelo::nitro::googleplaces {
     // load custom methods/properties
     registerHybrids(this, [](Prototype& prototype) {
       prototype.registerHybridMethod("autocomplete", &HybridPlacesSpec::autocomplete);
+      prototype.registerHybridMethod("getPlace", &HybridPlacesSpec::getPlace);
+      prototype.registerHybridMethod("autocompleteWithDetails", &HybridPlacesSpec::autocompleteWithDetails);
     });
   }
 
