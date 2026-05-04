@@ -5,14 +5,15 @@ import com.margelo.nitro.NitroModules
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.CircularBounds
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.PlacesClient
-import com.margelo.nitro.core.AnyMap
-import com.margelo.nitro.core.AnyValue
 import com.margelo.nitro.core.NullType
 import com.margelo.nitro.core.Promise
 import kotlinx.coroutines.tasks.await
+
 class HybridPlaces() : HybridPlacesSpec() {
 
     private val placesClient: PlacesClient
@@ -28,7 +29,7 @@ class HybridPlaces() : HybridPlacesSpec() {
 
         if (apiKey != null) {
             if (!Places.isInitialized()) {
-                Places.initialize(context, apiKey)
+                Places.initializeWithNewPlacesApiEnabled(context, apiKey)
             }
             println("[HybridPlaces] Places SDK initialized successfully.")
         } else {
@@ -38,36 +39,32 @@ class HybridPlaces() : HybridPlacesSpec() {
         placesClient = Places.createClient(context)
     }
 
-    override fun autocomplete(query: String): Promise<Array<PlaceAutocompleteResult>> {
-
+    override fun autocomplete(query: String, lat: Double?, lng: Double?, radius: Double?): Promise<Array<PlaceAutocompleteResult>> {
         return Promise.async {
-            try {
-                val token = AutocompleteSessionToken.newInstance()
-                val typeFilter = listOf("address")
+            val token = AutocompleteSessionToken.newInstance()
+            val requestBuilder = FindAutocompletePredictionsRequest.builder()
+                .setSessionToken(token)
+                .setQuery(query)
+                .setTypesFilter(listOf("route", "street_address", "premise", "subpremise", "geocode")) 
 
-                val request = FindAutocompletePredictionsRequest.builder()
-                    .setSessionToken(token)
-                    .setQuery(query)
-                    .setTypesFilter(typeFilter)
-                    .build()
-
-                val response = placesClient.findAutocompletePredictions(request).await()
-                
-                response.autocompletePredictions.map { prediction ->
-                    PlaceAutocompleteResult(
-                        prediction.placeId,
-                        prediction.getFullText(null).toString()
-                    )
-                }.toTypedArray()
-
-            } catch (e: Exception) {
-                Log.e("HybridPlaces", "Errore SDK v5: ${e.message}")
-                throw e
+            if (lat != null && lng != null && radius != null) {
+                val center = LatLng(lat, lng)
+                val circle = CircularBounds.newInstance(center, radius)
+                requestBuilder.setLocationBias(circle)
             }
+
+            val response = placesClient.findAutocompletePredictions(requestBuilder.build()).await()
+            
+            response.getAutocompletePredictions().map { suggestion ->
+                PlaceAutocompleteResult(
+                    suggestion.placeId,
+                    suggestion.getFullText(null).toString()
+                )
+            }.toTypedArray()
         }
     }
 
-    override fun getPlace(placeId: String): Promise<Variant_NullType_AnyMap> {
+    override fun getPlace(placeId: String): Promise<Variant_NullType_PlaceDetails> {
         return Promise.async {
             try {
                 val placeFields = listOf(
@@ -78,38 +75,50 @@ class HybridPlaces() : HybridPlacesSpec() {
                     Place.Field.LOCATION
                 )
 
-                val token = AutocompleteSessionToken.newInstance()
                 val request = FetchPlaceRequest.builder(placeId, placeFields)
-                    .setSessionToken(token)
+                    .setSessionToken(AutocompleteSessionToken.newInstance())
                     .build()
 
                 val response = placesClient.fetchPlace(request).await()
                 val place = response.place
 
-                val data = AnyMap()
-                data.setString("name", place.displayName ?: "")
-                data.setString("formatted_address", place.formattedAddress ?: "")
-                data.setString("place_id", place.id ?: "")
-                data.setDouble("latitude", place.location?.latitude ?: 0.0)
-                data.setDouble("longitude", place.location?.longitude ?: 0.0)
+                val components = place.addressComponents?.asList()?.map { component ->
+                    AddressComponent(
+                        component.name,
+                        component.shortName ?: "",
+                        component.types.toTypedArray()
+                    )
+                }?.toTypedArray() ?: emptyArray()
 
-                place.addressComponents?.asList()?.forEach { component ->
-                    val type = component.types.firstOrNull() ?: ""
-                    if (type.isNotEmpty()) {
-                        data.setString(type, component.name)
-                    }
-                }
+                val details = PlaceDetails(
+                    place.displayName ?: "",
+                    place.formattedAddress ?: "",
+                    place.id ?: "",
+                    place.location?.latitude ?: 0.0,
+                    place.location?.longitude ?: 0.0,
+                    components
+                )
 
-                Variant_NullType_AnyMap.create(data)
+                Variant_NullType_PlaceDetails.create(details)
             } catch (e: Exception) {
                 Log.e("HybridPlaces", "getPlace error: ${e.message}")
-                // Se il place non viene trovato, ritorna null
-                if (e.message?.contains("NOT_FOUND") == true || e.message?.contains("INVALID_ARGUMENT") == true) {
-                    Variant_NullType_AnyMap.create(NullType.INSTANCE)
-                } else {
-                    throw e
+                Variant_NullType_PlaceDetails.create(NullType.NULL)
+            }
+        }
+    }
+
+    override fun autocompleteWithDetails(query: String, lat: Double?, lng: Double?, radius: Double?): Promise<Array<PlaceDetails>> {
+        return Promise.async {
+            val predictions = autocomplete(query, lat, lng, radius).await()
+            val detailedResults = predictions.mapNotNull { prediction ->
+                try {
+                    val variant = getPlace(prediction.placeId).await()
+                    variant.asSecondOrNull()
+                } catch (e: Exception) {
+                    null
                 }
             }
+            detailedResults.toTypedArray()
         }
     }
 }
