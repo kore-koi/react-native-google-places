@@ -125,9 +125,9 @@ open class HybridPlacesSpec_cxx {
 
   // Methods
   @inline(__always)
-  public final func autocomplete(query: std.string) -> bridge.Result_std__shared_ptr_Promise_std__vector_PlaceAutocompleteResult____ {
+  public final func autocomplete(query: std.string, lat: bridge.std__optional_double_, lng: bridge.std__optional_double_, radius: bridge.std__optional_double_) -> bridge.Result_std__shared_ptr_Promise_std__vector_PlaceAutocompleteResult____ {
     do {
-      let __result = try self.__implementation.autocomplete(query: String(query))
+      let __result = try self.__implementation.autocomplete(query: String(query), lat: lat.value, lng: lng.value, radius: radius.value)
       let __resultCpp = { () -> bridge.std__shared_ptr_Promise_std__vector_PlaceAutocompleteResult___ in
         let __promise = bridge.create_std__shared_ptr_Promise_std__vector_PlaceAutocompleteResult___()
         let __promiseHolder = bridge.wrap_std__shared_ptr_Promise_std__vector_PlaceAutocompleteResult___(__promise)
@@ -150,28 +150,53 @@ open class HybridPlacesSpec_cxx {
   }
   
   @inline(__always)
-  public final func getPlace(placeId: std.string) -> bridge.Result_std__shared_ptr_Promise_std__variant_nitro__NullType__std__shared_ptr_AnyMap_____ {
+  public final func getPlace(placeId: std.string) -> bridge.Result_std__shared_ptr_Promise_std__variant_nitro__NullType__PlaceDetails____ {
     do {
       let __result = try self.__implementation.getPlace(placeId: String(placeId))
-      let __resultCpp = { () -> bridge.std__shared_ptr_Promise_std__variant_nitro__NullType__std__shared_ptr_AnyMap____ in
-        let __promise = bridge.create_std__shared_ptr_Promise_std__variant_nitro__NullType__std__shared_ptr_AnyMap____()
-        let __promiseHolder = bridge.wrap_std__shared_ptr_Promise_std__variant_nitro__NullType__std__shared_ptr_AnyMap____(__promise)
+      let __resultCpp = { () -> bridge.std__shared_ptr_Promise_std__variant_nitro__NullType__PlaceDetails___ in
+        let __promise = bridge.create_std__shared_ptr_Promise_std__variant_nitro__NullType__PlaceDetails___()
+        let __promiseHolder = bridge.wrap_std__shared_ptr_Promise_std__variant_nitro__NullType__PlaceDetails___(__promise)
         __result
-          .then({ __result in __promiseHolder.resolve({ () -> bridge.std__variant_nitro__NullType__std__shared_ptr_AnyMap__ in
+          .then({ __result in __promiseHolder.resolve({ () -> bridge.std__variant_nitro__NullType__PlaceDetails_ in
               switch __result {
                 case .first(let __value):
-                  return bridge.create_std__variant_nitro__NullType__std__shared_ptr_AnyMap__(margelo.nitro.NullType.null)
+                  return bridge.create_std__variant_nitro__NullType__PlaceDetails_(margelo.nitro.NullType.null)
                 case .second(let __value):
-                  return bridge.create_std__variant_nitro__NullType__std__shared_ptr_AnyMap__(__value.cppPart)
+                  return bridge.create_std__variant_nitro__NullType__PlaceDetails_(__value)
               }
             }().variant) })
           .catch({ __error in __promiseHolder.reject(__error.toCpp()) })
         return __promise
       }()
-      return bridge.create_Result_std__shared_ptr_Promise_std__variant_nitro__NullType__std__shared_ptr_AnyMap_____(__resultCpp)
+      return bridge.create_Result_std__shared_ptr_Promise_std__variant_nitro__NullType__PlaceDetails____(__resultCpp)
     } catch (let __error) {
       let __exceptionPtr = __error.toCpp()
-      return bridge.create_Result_std__shared_ptr_Promise_std__variant_nitro__NullType__std__shared_ptr_AnyMap_____(__exceptionPtr)
+      return bridge.create_Result_std__shared_ptr_Promise_std__variant_nitro__NullType__PlaceDetails____(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func autocompleteWithDetails(query: std.string, lat: bridge.std__optional_double_, lng: bridge.std__optional_double_, radius: bridge.std__optional_double_) -> bridge.Result_std__shared_ptr_Promise_std__vector_PlaceDetails____ {
+    do {
+      let __result = try self.__implementation.autocompleteWithDetails(query: String(query), lat: lat.value, lng: lng.value, radius: radius.value)
+      let __resultCpp = { () -> bridge.std__shared_ptr_Promise_std__vector_PlaceDetails___ in
+        let __promise = bridge.create_std__shared_ptr_Promise_std__vector_PlaceDetails___()
+        let __promiseHolder = bridge.wrap_std__shared_ptr_Promise_std__vector_PlaceDetails___(__promise)
+        __result
+          .then({ __result in __promiseHolder.resolve({ () -> bridge.std__vector_PlaceDetails_ in
+              var __vector = bridge.create_std__vector_PlaceDetails_(__result.count)
+              for __item in __result {
+                __vector.push_back(__item)
+              }
+              return __vector
+            }()) })
+          .catch({ __error in __promiseHolder.reject(__error.toCpp()) })
+        return __promise
+      }()
+      return bridge.create_Result_std__shared_ptr_Promise_std__vector_PlaceDetails____(__resultCpp)
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_std__shared_ptr_Promise_std__vector_PlaceDetails____(__exceptionPtr)
     }
   }
 }

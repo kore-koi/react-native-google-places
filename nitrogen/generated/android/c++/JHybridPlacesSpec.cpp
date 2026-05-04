@@ -9,6 +9,10 @@
 
 // Forward declaration of `PlaceAutocompleteResult` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct PlaceAutocompleteResult; }
+// Forward declaration of `PlaceDetails` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct PlaceDetails; }
+// Forward declaration of `AddressComponent` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct AddressComponent; }
 
 #include "PlaceAutocompleteResult.hpp"
 #include <vector>
@@ -17,11 +21,14 @@ namespace margelo::nitro::googleplaces { struct PlaceAutocompleteResult; }
 #include "JPlaceAutocompleteResult.hpp"
 #include <string>
 #include <NitroModules/Null.hpp>
-#include <NitroModules/AnyMap.hpp>
+#include "PlaceDetails.hpp"
 #include <variant>
-#include "JVariant_NullType_AnyMap.hpp"
+#include "JVariant_NullType_PlaceDetails.hpp"
 #include <NitroModules/JNull.hpp>
-#include <NitroModules/JAnyMap.hpp>
+#include "JPlaceDetails.hpp"
+#include "AddressComponent.hpp"
+#include "JAddressComponent.hpp"
+#include <optional>
 
 namespace margelo::nitro::googleplaces {
 
@@ -62,9 +69,9 @@ namespace margelo::nitro::googleplaces {
   
 
   // Methods
-  std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> JHybridPlacesSpec::autocomplete(const std::string& query) {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<jni::JString> /* query */)>("autocomplete");
-    auto __result = method(_javaPart, jni::make_jstring(query));
+  std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> JHybridPlacesSpec::autocomplete(const std::string& query, std::optional<double> lat, std::optional<double> lng, std::optional<double> radius) {
+    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<jni::JString> /* query */, jni::alias_ref<jni::JDouble> /* lat */, jni::alias_ref<jni::JDouble> /* lng */, jni::alias_ref<jni::JDouble> /* radius */)>("autocomplete");
+    auto __result = method(_javaPart, jni::make_jstring(query), lat.has_value() ? jni::JDouble::valueOf(lat.value()) : nullptr, lng.has_value() ? jni::JDouble::valueOf(lng.value()) : nullptr, radius.has_value() ? jni::JDouble::valueOf(radius.value()) : nullptr);
     return [&]() {
       auto __promise = Promise<std::vector<PlaceAutocompleteResult>>::create();
       __result->cthis()->addOnResolvedListener([=](const jni::alias_ref<jni::JObject>& __boxedResult) {
@@ -87,14 +94,39 @@ namespace margelo::nitro::googleplaces {
       return __promise;
     }();
   }
-  std::shared_ptr<Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>> JHybridPlacesSpec::getPlace(const std::string& placeId) {
+  std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>> JHybridPlacesSpec::getPlace(const std::string& placeId) {
     static const auto method = javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<jni::JString> /* placeId */)>("getPlace");
     auto __result = method(_javaPart, jni::make_jstring(placeId));
     return [&]() {
-      auto __promise = Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>::create();
+      auto __promise = Promise<std::variant<nitro::NullType, PlaceDetails>>::create();
       __result->cthis()->addOnResolvedListener([=](const jni::alias_ref<jni::JObject>& __boxedResult) {
-        auto __result = jni::static_ref_cast<JVariant_NullType_AnyMap>(__boxedResult);
+        auto __result = jni::static_ref_cast<JVariant_NullType_PlaceDetails>(__boxedResult);
         __promise->resolve(__result->toCpp());
+      });
+      __result->cthis()->addOnRejectedListener([=](const jni::alias_ref<jni::JThrowable>& __throwable) {
+        jni::JniException __jniError(__throwable);
+        __promise->reject(std::make_exception_ptr(__jniError));
+      });
+      return __promise;
+    }();
+  }
+  std::shared_ptr<Promise<std::vector<PlaceDetails>>> JHybridPlacesSpec::autocompleteWithDetails(const std::string& query, std::optional<double> lat, std::optional<double> lng, std::optional<double> radius) {
+    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<jni::JString> /* query */, jni::alias_ref<jni::JDouble> /* lat */, jni::alias_ref<jni::JDouble> /* lng */, jni::alias_ref<jni::JDouble> /* radius */)>("autocompleteWithDetails");
+    auto __result = method(_javaPart, jni::make_jstring(query), lat.has_value() ? jni::JDouble::valueOf(lat.value()) : nullptr, lng.has_value() ? jni::JDouble::valueOf(lng.value()) : nullptr, radius.has_value() ? jni::JDouble::valueOf(radius.value()) : nullptr);
+    return [&]() {
+      auto __promise = Promise<std::vector<PlaceDetails>>::create();
+      __result->cthis()->addOnResolvedListener([=](const jni::alias_ref<jni::JObject>& __boxedResult) {
+        auto __result = jni::static_ref_cast<jni::JArrayClass<JPlaceDetails>>(__boxedResult);
+        __promise->resolve([&]() {
+          size_t __size = __result->size();
+          std::vector<PlaceDetails> __vector;
+          __vector.reserve(__size);
+          for (size_t __i = 0; __i < __size; __i++) {
+            auto __element = __result->getElement(__i);
+            __vector.push_back(__element->toCpp());
+          }
+          return __vector;
+        }());
       });
       __result->cthis()->addOnRejectedListener([=](const jni::alias_ref<jni::JThrowable>& __throwable) {
         jni::JniException __jniError(__throwable);

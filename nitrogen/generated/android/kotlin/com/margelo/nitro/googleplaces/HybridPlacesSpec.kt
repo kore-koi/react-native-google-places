@@ -12,7 +12,6 @@ import com.facebook.jni.HybridData
 import com.facebook.proguard.annotations.DoNotStrip
 import com.margelo.nitro.core.Promise
 import com.margelo.nitro.core.NullType
-import com.margelo.nitro.core.AnyMap
 import com.margelo.nitro.core.HybridObject
 
 /**
@@ -50,11 +49,15 @@ abstract class HybridPlacesSpec: HybridObject() {
   // Methods
   @DoNotStrip
   @Keep
-  abstract fun autocomplete(query: String): Promise<Array<PlaceAutocompleteResult>>
+  abstract fun autocomplete(query: String, lat: Double?, lng: Double?, radius: Double?): Promise<Array<PlaceAutocompleteResult>>
   
   @DoNotStrip
   @Keep
-  abstract fun getPlace(placeId: String): Promise<Variant_NullType_AnyMap>
+  abstract fun getPlace(placeId: String): Promise<Variant_NullType_PlaceDetails>
+  
+  @DoNotStrip
+  @Keep
+  abstract fun autocompleteWithDetails(query: String, lat: Double?, lng: Double?, radius: Double?): Promise<Array<PlaceDetails>>
 
   private external fun initHybrid(): HybridData
 

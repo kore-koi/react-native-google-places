@@ -14,14 +14,20 @@ namespace NitroGooglePlaces { class HybridPlacesSpec_cxx; }
 
 // Forward declaration of `PlaceAutocompleteResult` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct PlaceAutocompleteResult; }
+// Forward declaration of `PlaceDetails` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct PlaceDetails; }
+// Forward declaration of `AddressComponent` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct AddressComponent; }
 
 #include "PlaceAutocompleteResult.hpp"
 #include <vector>
 #include <NitroModules/Promise.hpp>
 #include <string>
+#include <optional>
 #include <NitroModules/Null.hpp>
-#include <NitroModules/AnyMap.hpp>
+#include "PlaceDetails.hpp"
 #include <variant>
+#include "AddressComponent.hpp"
 
 #include "NitroGooglePlaces-Swift-Cxx-Umbrella.hpp"
 
@@ -73,16 +79,24 @@ namespace margelo::nitro::googleplaces {
 
   public:
     // Methods
-    inline std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> autocomplete(const std::string& query) override {
-      auto __result = _swiftPart.autocomplete(query);
+    inline std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> autocomplete(const std::string& query, std::optional<double> lat, std::optional<double> lng, std::optional<double> radius) override {
+      auto __result = _swiftPart.autocomplete(query, lat, lng, radius);
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }
       auto __value = std::move(__result.value());
       return __value;
     }
-    inline std::shared_ptr<Promise<std::variant<nitro::NullType, std::shared_ptr<AnyMap>>>> getPlace(const std::string& placeId) override {
+    inline std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>> getPlace(const std::string& placeId) override {
       auto __result = _swiftPart.getPlace(placeId);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+      auto __value = std::move(__result.value());
+      return __value;
+    }
+    inline std::shared_ptr<Promise<std::vector<PlaceDetails>>> autocompleteWithDetails(const std::string& query, std::optional<double> lat, std::optional<double> lng, std::optional<double> radius) override {
+      auto __result = _swiftPart.autocompleteWithDetails(query, lat, lng, radius);
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }
