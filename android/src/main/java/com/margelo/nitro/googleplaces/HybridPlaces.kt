@@ -5,8 +5,7 @@ import com.margelo.nitro.NitroModules
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.model.CircularBounds
-import com.google.android.gms.maps.model.LatLng
+
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.PlacesClient
@@ -39,19 +38,14 @@ class HybridPlaces() : HybridPlacesSpec() {
         placesClient = Places.createClient(context)
     }
 
-    override fun autocomplete(query: String, lat: Double?, lng: Double?, radius: Double?): Promise<Array<PlaceAutocompleteResult>> {
+    override fun autocomplete(query: String, types: Array<String>?): Promise<Array<PlaceAutocompleteResult>> {
         return Promise.async {
             val token = AutocompleteSessionToken.newInstance()
+            val effectiveTypes = types?.toList() ?: listOf("route", "street_address", "premise", "subpremise", "geocode")
             val requestBuilder = FindAutocompletePredictionsRequest.builder()
                 .setSessionToken(token)
                 .setQuery(query)
-                .setTypesFilter(listOf("route", "street_address", "premise", "subpremise", "geocode")) 
-
-            if (lat != null && lng != null && radius != null) {
-                val center = LatLng(lat, lng)
-                val circle = CircularBounds.newInstance(center, radius)
-                requestBuilder.setLocationBias(circle)
-            }
+                .setTypesFilter(effectiveTypes)
 
             val response = placesClient.findAutocompletePredictions(requestBuilder.build()).await()
             
@@ -107,9 +101,9 @@ class HybridPlaces() : HybridPlacesSpec() {
         }
     }
 
-    override fun autocompleteWithDetails(query: String, lat: Double?, lng: Double?, radius: Double?): Promise<Array<PlaceDetails>> {
+    override fun autocompleteWithDetails(query: String, types: Array<String>?): Promise<Array<PlaceDetails>> {
         return Promise.async {
-            val predictions = autocomplete(query, lat, lng, radius).await()
+            val predictions = autocomplete(query, types).await()
             val detailedResults = predictions.mapNotNull { prediction ->
                 try {
                     val variant = getPlace(prediction.placeId).await()
