@@ -69,9 +69,18 @@ namespace margelo::nitro::googleplaces {
   
 
   // Methods
-  std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> JHybridPlacesSpec::autocomplete(const std::string& query, std::optional<double> lat, std::optional<double> lng, std::optional<double> radius) {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<jni::JString> /* query */, jni::alias_ref<jni::JDouble> /* lat */, jni::alias_ref<jni::JDouble> /* lng */, jni::alias_ref<jni::JDouble> /* radius */)>("autocomplete");
-    auto __result = method(_javaPart, jni::make_jstring(query), lat.has_value() ? jni::JDouble::valueOf(lat.value()) : nullptr, lng.has_value() ? jni::JDouble::valueOf(lng.value()) : nullptr, radius.has_value() ? jni::JDouble::valueOf(radius.value()) : nullptr);
+  std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> JHybridPlacesSpec::autocomplete(const std::string& query, const std::optional<std::vector<std::string>>& types) {
+    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<jni::JString> /* query */, jni::alias_ref<jni::JArrayClass<jni::JString>> /* types */)>("autocomplete");
+    auto __result = method(_javaPart, jni::make_jstring(query), types.has_value() ? [&]() {
+      size_t __size = types.value().size();
+      jni::local_ref<jni::JArrayClass<jni::JString>> __array = jni::JArrayClass<jni::JString>::newArray(__size);
+      for (size_t __i = 0; __i < __size; __i++) {
+        const auto& __element = types.value()[__i];
+        auto __elementJni = jni::make_jstring(__element);
+        __array->setElement(__i, *__elementJni);
+      }
+      return __array;
+    }() : nullptr);
     return [&]() {
       auto __promise = Promise<std::vector<PlaceAutocompleteResult>>::create();
       __result->cthis()->addOnResolvedListener([=](const jni::alias_ref<jni::JObject>& __boxedResult) {
@@ -110,9 +119,18 @@ namespace margelo::nitro::googleplaces {
       return __promise;
     }();
   }
-  std::shared_ptr<Promise<std::vector<PlaceDetails>>> JHybridPlacesSpec::autocompleteWithDetails(const std::string& query, std::optional<double> lat, std::optional<double> lng, std::optional<double> radius) {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<jni::JString> /* query */, jni::alias_ref<jni::JDouble> /* lat */, jni::alias_ref<jni::JDouble> /* lng */, jni::alias_ref<jni::JDouble> /* radius */)>("autocompleteWithDetails");
-    auto __result = method(_javaPart, jni::make_jstring(query), lat.has_value() ? jni::JDouble::valueOf(lat.value()) : nullptr, lng.has_value() ? jni::JDouble::valueOf(lng.value()) : nullptr, radius.has_value() ? jni::JDouble::valueOf(radius.value()) : nullptr);
+  std::shared_ptr<Promise<std::vector<PlaceDetails>>> JHybridPlacesSpec::autocompleteWithDetails(const std::string& query, const std::optional<std::vector<std::string>>& types) {
+    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<jni::JString> /* query */, jni::alias_ref<jni::JArrayClass<jni::JString>> /* types */)>("autocompleteWithDetails");
+    auto __result = method(_javaPart, jni::make_jstring(query), types.has_value() ? [&]() {
+      size_t __size = types.value().size();
+      jni::local_ref<jni::JArrayClass<jni::JString>> __array = jni::JArrayClass<jni::JString>::newArray(__size);
+      for (size_t __i = 0; __i < __size; __i++) {
+        const auto& __element = types.value()[__i];
+        auto __elementJni = jni::make_jstring(__element);
+        __array->setElement(__i, *__elementJni);
+      }
+      return __array;
+    }() : nullptr);
     return [&]() {
       auto __promise = Promise<std::vector<PlaceDetails>>::create();
       __result->cthis()->addOnResolvedListener([=](const jni::alias_ref<jni::JObject>& __boxedResult) {

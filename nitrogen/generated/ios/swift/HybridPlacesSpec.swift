@@ -13,9 +13,9 @@ public protocol HybridPlacesSpec_protocol: HybridObject {
   
 
   // Methods
-  func autocomplete(query: String, lat: Double?, lng: Double?, radius: Double?) throws -> Promise<[PlaceAutocompleteResult]>
+  func autocomplete(query: String, types: [String]?) throws -> Promise<[PlaceAutocompleteResult]>
   func getPlace(placeId: String) throws -> Promise<Variant_NullType_PlaceDetails>
-  func autocompleteWithDetails(query: String, lat: Double?, lng: Double?, radius: Double?) throws -> Promise<[PlaceDetails]>
+  func autocompleteWithDetails(query: String, types: [String]?) throws -> Promise<[PlaceDetails]>
 }
 
 public extension HybridPlacesSpec_protocol {
