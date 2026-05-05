@@ -1,6 +1,6 @@
 {
   "name": "@korekoi/react-native-google-places",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A React Native library for Google Places API, providing geocoding, autocomplete, and more.",
   "main": "lib/index",
   "module": "lib/index",
