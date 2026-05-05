@@ -1,16 +1,16 @@
 import { type HybridObject } from "react-native-nitro-modules"
 
-interface PlaceAutocompleteResult {
+export interface PlaceAutocompleteResult {
   placeId: string
   label: string
 }
-interface AddressComponent {
+export interface AddressComponent {
   name: string
   short_name: string
   types: string[]
 }
 
-interface PlaceDetails {
+export interface PlaceDetails {
   name: string
   formatted_address: string
   place_id: string
