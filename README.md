@@ -63,18 +63,88 @@ Add the meta-data entry in `AndroidManifest.xml`:
 ```ts
 import places from '@korekoi/react-native-google-places'
 
+// Basic autocomplete
 const results = await places.autocomplete('1600 Amphitheatre Pkwy, Mountain View')
 // results: Array<{ placeId: string; label: string }>
+
+// Autocomplete with custom type filters
+const results2 = await places.autocomplete('Roma', ['locality', 'administrative_area_level_3'])
+
+// Autocomplete with full place details
+const details = await places.autocompleteWithDetails('1600 Amphitheatre Pkwy')
+// details: Array<PlaceDetails>
+
+// Get details for a specific place
+const place = await places.getPlace('ChIJN1t_tDeuEmsRUsoyG83frY4')
+// place: PlaceDetails | null
 ```
 
 ## API
 
-### `autocomplete(query: string)`
+### `autocomplete(query: string, types?: string[])`
 
-Returns a list of results with:
+Returns a list of autocomplete predictions.
+
+**Parameters:**
+
+- `query` – the search string
+- `types` *(optional)* – array of [place type filters](https://developers.google.com/maps/documentation/places/web-service/supported_types). Defaults to `["route", "street_address", "premise", "subpremise", "geocode"]`.
+
+**Returns:** `Promise<PlaceAutocompleteResult[]>`
 
 - `placeId`: the place id
 - `label`: full display string for UI
+
+---
+
+### `autocompleteWithDetails(query: string, types?: string[])`
+
+Same as `autocomplete`, but fetches full place details for each result.
+
+**Parameters:**
+
+- `query` – the search string
+- `types` *(optional)* – same type filters as `autocomplete`
+
+**Returns:** `Promise<PlaceDetails[]>`
+
+---
+
+### `getPlace(placeId: string)`
+
+Fetches details for a single place by its ID.
+
+**Parameters:**
+
+- `placeId` – a Google Place ID
+
+**Returns:** `Promise<PlaceDetails | null>`
+
+---
+
+### Types
+
+```ts
+interface PlaceAutocompleteResult {
+  placeId: string
+  label: string
+}
+
+interface PlaceDetails {
+  name: string
+  formatted_address: string
+  place_id: string
+  latitude: number
+  longitude: number
+  address_components: AddressComponent[]
+}
+
+interface AddressComponent {
+  name: string
+  short_name: string
+  types: string[]
+}
+```
 
 ## Notes
 

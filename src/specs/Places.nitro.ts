@@ -23,7 +23,7 @@ export interface Places extends HybridObject<{
   ios: "swift"
   android: "kotlin"
 }> {
-  autocomplete(query: string, lat?: number, lng?: number, radius?: number): Promise<PlaceAutocompleteResult[]>
+  autocomplete(query: string, types?: string[]): Promise<PlaceAutocompleteResult[]>
   getPlace(placeId: string): Promise<PlaceDetails | null>
-  autocompleteWithDetails(query: string, lat?: number, lng?: number, radius?: number): Promise<PlaceDetails[]>
+  autocompleteWithDetails(query: string, types?: string[]): Promise<PlaceDetails[]>
 }

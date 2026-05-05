@@ -1,7 +1,7 @@
 import Foundation
 import NitroModules
 import GooglePlaces
-import CoreLocation
+
 
 class HybridPlaces : HybridPlacesSpec {
       override init() {
@@ -16,17 +16,13 @@ class HybridPlaces : HybridPlacesSpec {
             }
       }
   
-    func autocomplete(query: String, lat: Double?, lng: Double?, radius: Double?) throws -> Promise<[PlaceAutocompleteResult]> {
+    func autocomplete(query: String, types: [String]?) throws -> Promise<[PlaceAutocompleteResult]> {
       return Promise.async {
         try await withCheckedThrowingContinuation { continuation in
           DispatchQueue.main.async {
             let token = GMSAutocompleteSessionToken()
             let filter = GMSAutocompleteFilter()
-            filter.types = ["route", "street_address", "premise", "subpremise", "geocode"]
-            if let lat = lat, let lng = lng, let radius = radius {
-                let center = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-                filter.locationBias = GMSPlaceCircularLocationOption(center, radius)
-            }
+            filter.types = types ?? ["route", "street_address", "premise", "subpremise", "geocode"]
 
             let request = GMSAutocompleteRequest(query: query)
             request.filter = filter
@@ -119,9 +115,9 @@ class HybridPlaces : HybridPlacesSpec {
       }
     }
 
-    func autocompleteWithDetails(query: String, lat: Double?, lng: Double?, radius: Double?) throws -> Promise<[PlaceDetails]> {
+    func autocompleteWithDetails(query: String, types: [String]?) throws -> Promise<[PlaceDetails]> {
         return Promise.async {
-            let predictions = try await self.autocomplete(query: query, lat: lat, lng: lng, radius: radius).await()
+            let predictions = try await self.autocomplete(query: query, types: types).await()
             
             var detailedResults: [PlaceDetails] = []
             

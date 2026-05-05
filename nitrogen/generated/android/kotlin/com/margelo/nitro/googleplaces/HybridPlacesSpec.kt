@@ -49,7 +49,7 @@ abstract class HybridPlacesSpec: HybridObject() {
   // Methods
   @DoNotStrip
   @Keep
-  abstract fun autocomplete(query: String, lat: Double?, lng: Double?, radius: Double?): Promise<Array<PlaceAutocompleteResult>>
+  abstract fun autocomplete(query: String, types: Array<String>?): Promise<Array<PlaceAutocompleteResult>>
   
   @DoNotStrip
   @Keep
@@ -57,7 +57,7 @@ abstract class HybridPlacesSpec: HybridObject() {
   
   @DoNotStrip
   @Keep
-  abstract fun autocompleteWithDetails(query: String, lat: Double?, lng: Double?, radius: Double?): Promise<Array<PlaceDetails>>
+  abstract fun autocompleteWithDetails(query: String, types: Array<String>?): Promise<Array<PlaceDetails>>
 
   private external fun initHybrid(): HybridData
 

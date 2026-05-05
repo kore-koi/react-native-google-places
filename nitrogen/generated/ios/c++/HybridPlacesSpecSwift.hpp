@@ -79,8 +79,8 @@ namespace margelo::nitro::googleplaces {
 
   public:
     // Methods
-    inline std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> autocomplete(const std::string& query, std::optional<double> lat, std::optional<double> lng, std::optional<double> radius) override {
-      auto __result = _swiftPart.autocomplete(query, lat, lng, radius);
+    inline std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> autocomplete(const std::string& query, const std::optional<std::vector<std::string>>& types) override {
+      auto __result = _swiftPart.autocomplete(query, types);
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }
@@ -95,8 +95,8 @@ namespace margelo::nitro::googleplaces {
       auto __value = std::move(__result.value());
       return __value;
     }
-    inline std::shared_ptr<Promise<std::vector<PlaceDetails>>> autocompleteWithDetails(const std::string& query, std::optional<double> lat, std::optional<double> lng, std::optional<double> radius) override {
-      auto __result = _swiftPart.autocompleteWithDetails(query, lat, lng, radius);
+    inline std::shared_ptr<Promise<std::vector<PlaceDetails>>> autocompleteWithDetails(const std::string& query, const std::optional<std::vector<std::string>>& types) override {
+      auto __result = _swiftPart.autocompleteWithDetails(query, types);
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }
