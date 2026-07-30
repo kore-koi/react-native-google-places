@@ -10,6 +10,8 @@
 // Forward declarations of C++ defined types
 // Forward declaration of `AddressComponent` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct AddressComponent; }
+// Forward declaration of `AutocompleteOptions` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct AutocompleteOptions; }
 // Forward declaration of `HybridPlacesSpec` to properly resolve imports.
 namespace margelo::nitro::googleplaces { class HybridPlacesSpec; }
 // Forward declaration of `PlaceAutocompleteResult` to properly resolve imports.
@@ -23,6 +25,7 @@ namespace NitroGooglePlaces { class HybridPlacesSpec_cxx; }
 
 // Include C++ defined types
 #include "AddressComponent.hpp"
+#include "AutocompleteOptions.hpp"
 #include "HybridPlacesSpec.hpp"
 #include "PlaceAutocompleteResult.hpp"
 #include "PlaceDetails.hpp"
@@ -134,6 +137,21 @@ namespace margelo::nitro::googleplaces::bridge::swift {
     return optional.has_value();
   }
   inline std::vector<std::string> get_std__optional_std__vector_std__string__(const std::optional<std::vector<std::string>>& optional) noexcept {
+    return *optional;
+  }
+  
+  // pragma MARK: std::optional<AutocompleteOptions>
+  /**
+   * Specialized version of `std::optional<AutocompleteOptions>`.
+   */
+  using std__optional_AutocompleteOptions_ = std::optional<AutocompleteOptions>;
+  inline std::optional<AutocompleteOptions> create_std__optional_AutocompleteOptions_(const AutocompleteOptions& value) noexcept {
+    return std::optional<AutocompleteOptions>(value);
+  }
+  inline bool has_value_std__optional_AutocompleteOptions_(const std::optional<AutocompleteOptions>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline AutocompleteOptions get_std__optional_AutocompleteOptions_(const std::optional<AutocompleteOptions>& optional) noexcept {
     return *optional;
   }
   

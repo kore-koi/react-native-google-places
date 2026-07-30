@@ -14,6 +14,8 @@ namespace NitroGooglePlaces { class HybridPlacesSpec_cxx; }
 
 // Forward declaration of `PlaceAutocompleteResult` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct PlaceAutocompleteResult; }
+// Forward declaration of `AutocompleteOptions` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct AutocompleteOptions; }
 // Forward declaration of `PlaceDetails` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct PlaceDetails; }
 // Forward declaration of `AddressComponent` to properly resolve imports.
@@ -23,6 +25,7 @@ namespace margelo::nitro::googleplaces { struct AddressComponent; }
 #include <vector>
 #include <NitroModules/Promise.hpp>
 #include <string>
+#include "AutocompleteOptions.hpp"
 #include <optional>
 #include <NitroModules/Null.hpp>
 #include "PlaceDetails.hpp"
@@ -79,8 +82,8 @@ namespace margelo::nitro::googleplaces {
 
   public:
     // Methods
-    inline std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> autocomplete(const std::string& query, const std::optional<std::vector<std::string>>& types) override {
-      auto __result = _swiftPart.autocomplete(query, types);
+    inline std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> autocomplete(const std::string& query, const std::optional<AutocompleteOptions>& options) override {
+      auto __result = _swiftPart.autocomplete(query, options);
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }
@@ -95,8 +98,8 @@ namespace margelo::nitro::googleplaces {
       auto __value = std::move(__result.value());
       return __value;
     }
-    inline std::shared_ptr<Promise<std::vector<PlaceDetails>>> autocompleteWithDetails(const std::string& query, const std::optional<std::vector<std::string>>& types) override {
-      auto __result = _swiftPart.autocompleteWithDetails(query, types);
+    inline std::shared_ptr<Promise<std::vector<PlaceDetails>>> autocompleteWithDetails(const std::string& query, const std::optional<AutocompleteOptions>& options) override {
+      auto __result = _swiftPart.autocompleteWithDetails(query, options);
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }

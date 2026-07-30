@@ -55,9 +55,9 @@ namespace margelo::nitro::googleplaces {
 
   public:
     // Methods
-    std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> autocomplete(const std::string& query, const std::optional<std::vector<std::string>>& types) override;
+    std::shared_ptr<Promise<std::vector<PlaceAutocompleteResult>>> autocomplete(const std::string& query, const std::optional<AutocompleteOptions>& options) override;
     std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>> getPlace(const std::string& placeId) override;
-    std::shared_ptr<Promise<std::vector<PlaceDetails>>> autocompleteWithDetails(const std::string& query, const std::optional<std::vector<std::string>>& types) override;
+    std::shared_ptr<Promise<std::vector<PlaceDetails>>> autocompleteWithDetails(const std::string& query, const std::optional<AutocompleteOptions>& options) override;
 
   private:
     friend HybridBase;

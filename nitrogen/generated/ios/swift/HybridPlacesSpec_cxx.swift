@@ -125,16 +125,9 @@ open class HybridPlacesSpec_cxx {
 
   // Methods
   @inline(__always)
-  public final func autocomplete(query: std.string, types: bridge.std__optional_std__vector_std__string__) -> bridge.Result_std__shared_ptr_Promise_std__vector_PlaceAutocompleteResult____ {
+  public final func autocomplete(query: std.string, options: bridge.std__optional_AutocompleteOptions_) -> bridge.Result_std__shared_ptr_Promise_std__vector_PlaceAutocompleteResult____ {
     do {
-      let __result = try self.__implementation.autocomplete(query: String(query), types: { () -> [String]? in
-        if bridge.has_value_std__optional_std__vector_std__string__(types) {
-          let __unwrapped = bridge.get_std__optional_std__vector_std__string__(types)
-          return __unwrapped.map({ __item in String(__item) })
-        } else {
-          return nil
-        }
-      }())
+      let __result = try self.__implementation.autocomplete(query: String(query), options: options.value)
       let __resultCpp = { () -> bridge.std__shared_ptr_Promise_std__vector_PlaceAutocompleteResult___ in
         let __promise = bridge.create_std__shared_ptr_Promise_std__vector_PlaceAutocompleteResult___()
         let __promiseHolder = bridge.wrap_std__shared_ptr_Promise_std__vector_PlaceAutocompleteResult___(__promise)
@@ -183,16 +176,9 @@ open class HybridPlacesSpec_cxx {
   }
   
   @inline(__always)
-  public final func autocompleteWithDetails(query: std.string, types: bridge.std__optional_std__vector_std__string__) -> bridge.Result_std__shared_ptr_Promise_std__vector_PlaceDetails____ {
+  public final func autocompleteWithDetails(query: std.string, options: bridge.std__optional_AutocompleteOptions_) -> bridge.Result_std__shared_ptr_Promise_std__vector_PlaceDetails____ {
     do {
-      let __result = try self.__implementation.autocompleteWithDetails(query: String(query), types: { () -> [String]? in
-        if bridge.has_value_std__optional_std__vector_std__string__(types) {
-          let __unwrapped = bridge.get_std__optional_std__vector_std__string__(types)
-          return __unwrapped.map({ __item in String(__item) })
-        } else {
-          return nil
-        }
-      }())
+      let __result = try self.__implementation.autocompleteWithDetails(query: String(query), options: options.value)
       let __resultCpp = { () -> bridge.std__shared_ptr_Promise_std__vector_PlaceDetails___ in
         let __promise = bridge.create_std__shared_ptr_Promise_std__vector_PlaceDetails___()
         let __promiseHolder = bridge.wrap_std__shared_ptr_Promise_std__vector_PlaceDetails___(__promise)
