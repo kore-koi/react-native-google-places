@@ -49,7 +49,7 @@ abstract class HybridPlacesSpec: HybridObject() {
   // Methods
   @DoNotStrip
   @Keep
-  abstract fun autocomplete(query: String, types: Array<String>?): Promise<Array<PlaceAutocompleteResult>>
+  abstract fun autocomplete(query: String, options: AutocompleteOptions?): Promise<Array<PlaceAutocompleteResult>>
   
   @DoNotStrip
   @Keep
@@ -57,7 +57,7 @@ abstract class HybridPlacesSpec: HybridObject() {
   
   @DoNotStrip
   @Keep
-  abstract fun autocompleteWithDetails(query: String, types: Array<String>?): Promise<Array<PlaceDetails>>
+  abstract fun autocompleteWithDetails(query: String, options: AutocompleteOptions?): Promise<Array<PlaceDetails>>
 
   private external fun initHybrid(): HybridData
 

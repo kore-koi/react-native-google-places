@@ -10,6 +10,8 @@
 // Forward declarations of C++ defined types
 // Forward declaration of `AddressComponent` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct AddressComponent; }
+// Forward declaration of `AutocompleteOptions` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct AutocompleteOptions; }
 // Forward declaration of `HybridPlacesSpec` to properly resolve imports.
 namespace margelo::nitro::googleplaces { class HybridPlacesSpec; }
 // Forward declaration of `PlaceAutocompleteResult` to properly resolve imports.
@@ -19,6 +21,7 @@ namespace margelo::nitro::googleplaces { struct PlaceDetails; }
 
 // Include C++ defined types
 #include "AddressComponent.hpp"
+#include "AutocompleteOptions.hpp"
 #include "HybridPlacesSpec.hpp"
 #include "PlaceAutocompleteResult.hpp"
 #include "PlaceDetails.hpp"

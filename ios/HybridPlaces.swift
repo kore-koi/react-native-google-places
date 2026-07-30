@@ -16,13 +16,16 @@ class HybridPlaces : HybridPlacesSpec {
             }
       }
   
-    func autocomplete(query: String, types: [String]?) throws -> Promise<[PlaceAutocompleteResult]> {
+    func autocomplete(query: String, options: AutocompleteOptions?) throws -> Promise<[PlaceAutocompleteResult]> {
       return Promise.async {
         try await withCheckedThrowingContinuation { continuation in
           DispatchQueue.main.async {
             let token = GMSAutocompleteSessionToken()
             let filter = GMSAutocompleteFilter()
-            filter.types = types ?? ["route", "street_address", "premise", "subpremise", "geocode"]
+            filter.types = options?.types ?? ["route", "street_address", "premise", "subpremise", "geocode"]
+            if let countries = options?.countries {
+              filter.countries = countries
+            }
 
             let request = GMSAutocompleteRequest(query: query)
             request.filter = filter
@@ -115,9 +118,9 @@ class HybridPlaces : HybridPlacesSpec {
       }
     }
 
-    func autocompleteWithDetails(query: String, types: [String]?) throws -> Promise<[PlaceDetails]> {
+    func autocompleteWithDetails(query: String, options: AutocompleteOptions?) throws -> Promise<[PlaceDetails]> {
         return Promise.async {
-            let predictions = try await self.autocomplete(query: query, types: types).await()
+            let predictions = try await self.autocomplete(query: query, options: options).await()
             
             var detailedResults: [PlaceDetails] = []
             

@@ -38,14 +38,16 @@ class HybridPlaces() : HybridPlacesSpec() {
         placesClient = Places.createClient(context)
     }
 
-    override fun autocomplete(query: String, types: Array<String>?): Promise<Array<PlaceAutocompleteResult>> {
+    override fun autocomplete(query: String, options: AutocompleteOptions?): Promise<Array<PlaceAutocompleteResult>> {
         return Promise.async {
             val token = AutocompleteSessionToken.newInstance()
-            val effectiveTypes = types?.toList() ?: listOf("route", "street_address", "premise", "subpremise", "geocode")
+            val effectiveTypes = options?.types?.toList() ?: listOf("route", "street_address", "premise", "subpremise", "geocode")
             val requestBuilder = FindAutocompletePredictionsRequest.builder()
                 .setSessionToken(token)
                 .setQuery(query)
                 .setTypesFilter(effectiveTypes)
+
+            options?.countries?.let { requestBuilder.setCountries(it.toList()) }
 
             val response = placesClient.findAutocompletePredictions(requestBuilder.build()).await()
             
@@ -101,9 +103,9 @@ class HybridPlaces() : HybridPlacesSpec() {
         }
     }
 
-    override fun autocompleteWithDetails(query: String, types: Array<String>?): Promise<Array<PlaceDetails>> {
+    override fun autocompleteWithDetails(query: String, options: AutocompleteOptions?): Promise<Array<PlaceDetails>> {
         return Promise.async {
-            val predictions = autocomplete(query, types).await()
+            val predictions = autocomplete(query, options).await()
             val detailedResults = predictions.mapNotNull { prediction ->
                 try {
                     val variant = getPlace(prediction.placeId).await()
