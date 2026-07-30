@@ -68,7 +68,12 @@ const results = await places.autocomplete('1600 Amphitheatre Pkwy, Mountain View
 // results: Array<{ placeId: string; label: string }>
 
 // Autocomplete with custom type filters
-const results2 = await places.autocomplete('Roma', ['locality', 'administrative_area_level_3'])
+const results2 = await places.autocomplete('Roma', {
+  types: ['locality', 'administrative_area_level_3'],
+})
+
+// Autocomplete restricted to one or more countries (ISO 3166-1 Alpha-2, max 5)
+const results3 = await places.autocomplete('Roma', { countries: ['it'] })
 
 // Autocomplete with full place details
 const details = await places.autocompleteWithDetails('1600 Amphitheatre Pkwy')
@@ -81,14 +86,16 @@ const place = await places.getPlace('ChIJN1t_tDeuEmsRUsoyG83frY4')
 
 ## API
 
-### `autocomplete(query: string, types?: string[])`
+### `autocomplete(query: string, options?: AutocompleteOptions)`
 
 Returns a list of autocomplete predictions.
 
 **Parameters:**
 
 - `query` – the search string
-- `types` *(optional)* – array of [place type filters](https://developers.google.com/maps/documentation/places/web-service/supported_types). Defaults to `["route", "street_address", "premise", "subpremise", "geocode"]`.
+- `options` *(optional)* – an `AutocompleteOptions` object:
+  - `types` *(optional)* – array of [place type filters](https://developers.google.com/maps/documentation/places/web-service/supported_types). Defaults to `["route", "street_address", "premise", "subpremise", "geocode"]`.
+  - `countries` *(optional)* – array of [ISO 3166-1 Alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country codes to restrict results to (e.g. `["it", "fr"]`). Max 5. When omitted, results are not restricted by country.
 
 **Returns:** `Promise<PlaceAutocompleteResult[]>`
 
@@ -97,14 +104,14 @@ Returns a list of autocomplete predictions.
 
 ---
 
-### `autocompleteWithDetails(query: string, types?: string[])`
+### `autocompleteWithDetails(query: string, options?: AutocompleteOptions)`
 
 Same as `autocomplete`, but fetches full place details for each result.
 
 **Parameters:**
 
 - `query` – the search string
-- `types` *(optional)* – same type filters as `autocomplete`
+- `options` *(optional)* – same `AutocompleteOptions` object as `autocomplete`
 
 **Returns:** `Promise<PlaceDetails[]>`
 
