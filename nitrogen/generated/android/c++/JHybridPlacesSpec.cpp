@@ -19,6 +19,8 @@ namespace margelo::nitro::googleplaces { struct AutocompleteOptions; }
 namespace margelo::nitro::googleplaces { struct CircularLocationBounds; }
 // Forward declaration of `RectangularLocationBounds` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct RectangularLocationBounds; }
+// Forward declaration of `GetPlaceOptions` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct GetPlaceOptions; }
 
 #include "PlaceAutocompleteResult.hpp"
 #include <vector>
@@ -42,6 +44,8 @@ namespace margelo::nitro::googleplaces { struct RectangularLocationBounds; }
 #include "JVariant_CircularLocationBounds_RectangularLocationBounds.hpp"
 #include "JCircularLocationBounds.hpp"
 #include "JRectangularLocationBounds.hpp"
+#include "GetPlaceOptions.hpp"
+#include "JGetPlaceOptions.hpp"
 
 namespace margelo::nitro::googleplaces {
 
@@ -107,9 +111,9 @@ namespace margelo::nitro::googleplaces {
       return __promise;
     }();
   }
-  std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>> JHybridPlacesSpec::getPlace(const std::string& placeId) {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<jni::JString> /* placeId */)>("getPlace");
-    auto __result = method(_javaPart, jni::make_jstring(placeId));
+  std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>> JHybridPlacesSpec::getPlace(const std::string& placeId, const std::optional<GetPlaceOptions>& options) {
+    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<jni::JString> /* placeId */, jni::alias_ref<JGetPlaceOptions> /* options */)>("getPlace");
+    auto __result = method(_javaPart, jni::make_jstring(placeId), options.has_value() ? JGetPlaceOptions::fromCpp(options.value()) : nullptr);
     return [&]() {
       auto __promise = Promise<std::variant<nitro::NullType, PlaceDetails>>::create();
       __result->cthis()->addOnResolvedListener([=](const jni::alias_ref<jni::JObject>& __boxedResult) {

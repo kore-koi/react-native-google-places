@@ -28,7 +28,10 @@ data class AutocompleteOptions(
   val locationBias: Variant_CircularLocationBounds_RectangularLocationBounds?,
   @DoNotStrip
   @Keep
-  val locationRestriction: Variant_CircularLocationBounds_RectangularLocationBounds?
+  val locationRestriction: Variant_CircularLocationBounds_RectangularLocationBounds?,
+  @DoNotStrip
+  @Keep
+  val sessionToken: String?
 ) {
   /* primary constructor */
 
@@ -40,8 +43,8 @@ data class AutocompleteOptions(
     @Keep
     @Suppress("unused")
     @JvmStatic
-    private fun fromCpp(types: Array<String>?, countries: Array<String>?, locationBias: Variant_CircularLocationBounds_RectangularLocationBounds?, locationRestriction: Variant_CircularLocationBounds_RectangularLocationBounds?): AutocompleteOptions {
-      return AutocompleteOptions(types, countries, locationBias, locationRestriction)
+    private fun fromCpp(types: Array<String>?, countries: Array<String>?, locationBias: Variant_CircularLocationBounds_RectangularLocationBounds?, locationRestriction: Variant_CircularLocationBounds_RectangularLocationBounds?, sessionToken: String?): AutocompleteOptions {
+      return AutocompleteOptions(types, countries, locationBias, locationRestriction, sessionToken)
     }
   }
 }

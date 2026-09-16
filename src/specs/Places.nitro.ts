@@ -29,6 +29,22 @@ export interface AutocompleteOptions {
   locationBias?: LocationBounds
   /** Restricts results strictly within a geographic area. Circular or rectangular. */
   locationRestriction?: LocationBounds
+  /**
+   * Session token grouping the autocomplete keystrokes of a single search into
+   * one billing session. Reuse the same token across `autocomplete` calls, then
+   * pass it to `getPlace` to close the session. Omit it to mint a fresh,
+   * single-use token per call. Prefer a v4 UUID (see `createSessionToken`).
+   */
+  sessionToken?: string
+}
+
+export interface GetPlaceOptions {
+  /**
+   * Session token from the preceding `autocomplete` calls. Passing it closes
+   * (consumes) that session so this request is billed together with the
+   * autocomplete keystrokes. Omit it to mint a fresh, single-use token.
+   */
+  sessionToken?: string
 }
 export interface AddressComponent {
   name: string
@@ -50,6 +66,6 @@ export interface Places extends HybridObject<{
   android: "kotlin"
 }> {
   autocomplete(query: string, options?: AutocompleteOptions): Promise<PlaceAutocompleteResult[]>
-  getPlace(placeId: string): Promise<PlaceDetails | null>
+  getPlace(placeId: string, options?: GetPlaceOptions): Promise<PlaceDetails | null>
   autocompleteWithDetails(query: string, options?: AutocompleteOptions): Promise<PlaceDetails[]>
 }

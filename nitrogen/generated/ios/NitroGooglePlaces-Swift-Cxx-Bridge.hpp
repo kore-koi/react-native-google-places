@@ -14,6 +14,8 @@ namespace margelo::nitro::googleplaces { struct AddressComponent; }
 namespace margelo::nitro::googleplaces { struct AutocompleteOptions; }
 // Forward declaration of `CircularLocationBounds` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct CircularLocationBounds; }
+// Forward declaration of `GetPlaceOptions` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct GetPlaceOptions; }
 // Forward declaration of `HybridPlacesSpec` to properly resolve imports.
 namespace margelo::nitro::googleplaces { class HybridPlacesSpec; }
 // Forward declaration of `PlaceAutocompleteResult` to properly resolve imports.
@@ -31,6 +33,7 @@ namespace NitroGooglePlaces { class HybridPlacesSpec_cxx; }
 #include "AddressComponent.hpp"
 #include "AutocompleteOptions.hpp"
 #include "CircularLocationBounds.hpp"
+#include "GetPlaceOptions.hpp"
 #include "HybridPlacesSpec.hpp"
 #include "PlaceAutocompleteResult.hpp"
 #include "PlaceDetails.hpp"
@@ -190,6 +193,21 @@ namespace margelo::nitro::googleplaces::bridge::swift {
     return *optional;
   }
   
+  // pragma MARK: std::optional<std::string>
+  /**
+   * Specialized version of `std::optional<std::string>`.
+   */
+  using std__optional_std__string_ = std::optional<std::string>;
+  inline std::optional<std::string> create_std__optional_std__string_(const std::string& value) noexcept {
+    return std::optional<std::string>(value);
+  }
+  inline bool has_value_std__optional_std__string_(const std::optional<std::string>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline std::string get_std__optional_std__string_(const std::optional<std::string>& optional) noexcept {
+    return *optional;
+  }
+  
   // pragma MARK: std::optional<AutocompleteOptions>
   /**
    * Specialized version of `std::optional<AutocompleteOptions>`.
@@ -277,6 +295,21 @@ namespace margelo::nitro::googleplaces::bridge::swift {
   Func_void_std__variant_nitro__NullType__PlaceDetails_ create_Func_void_std__variant_nitro__NullType__PlaceDetails_(void* NON_NULL swiftClosureWrapper) noexcept;
   inline Func_void_std__variant_nitro__NullType__PlaceDetails__Wrapper wrap_Func_void_std__variant_nitro__NullType__PlaceDetails_(Func_void_std__variant_nitro__NullType__PlaceDetails_ value) noexcept {
     return Func_void_std__variant_nitro__NullType__PlaceDetails__Wrapper(std::move(value));
+  }
+  
+  // pragma MARK: std::optional<GetPlaceOptions>
+  /**
+   * Specialized version of `std::optional<GetPlaceOptions>`.
+   */
+  using std__optional_GetPlaceOptions_ = std::optional<GetPlaceOptions>;
+  inline std::optional<GetPlaceOptions> create_std__optional_GetPlaceOptions_(const GetPlaceOptions& value) noexcept {
+    return std::optional<GetPlaceOptions>(value);
+  }
+  inline bool has_value_std__optional_GetPlaceOptions_(const std::optional<GetPlaceOptions>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline GetPlaceOptions get_std__optional_GetPlaceOptions_(const std::optional<GetPlaceOptions>& optional) noexcept {
+    return *optional;
   }
   
   // pragma MARK: std::vector<PlaceDetails>

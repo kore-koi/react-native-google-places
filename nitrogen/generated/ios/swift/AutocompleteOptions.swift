@@ -18,7 +18,7 @@ public extension AutocompleteOptions {
   /**
    * Create a new instance of `AutocompleteOptions`.
    */
-  init(types: [String]?, countries: [String]?, locationBias: Variant_CircularLocationBounds_RectangularLocationBounds?, locationRestriction: Variant_CircularLocationBounds_RectangularLocationBounds?) {
+  init(types: [String]?, countries: [String]?, locationBias: Variant_CircularLocationBounds_RectangularLocationBounds?, locationRestriction: Variant_CircularLocationBounds_RectangularLocationBounds?, sessionToken: String?) {
     self.init({ () -> bridge.std__optional_std__vector_std__string__ in
       if let __unwrappedValue = types {
         return bridge.create_std__optional_std__vector_std__string__({ () -> bridge.std__vector_std__string_ in
@@ -66,6 +66,12 @@ public extension AutocompleteOptions {
               return bridge.create_std__variant_CircularLocationBounds__RectangularLocationBounds_(__value)
           }
         }().variant)
+      } else {
+        return .init()
+      }
+    }(), { () -> bridge.std__optional_std__string_ in
+      if let __unwrappedValue = sessionToken {
+        return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
       } else {
         return .init()
       }
@@ -138,6 +144,18 @@ public extension AutocompleteOptions {
               fatalError("Variant can never have index \(__variant.index())!")
           }
         }()
+      } else {
+        return nil
+      }
+    }()
+  }
+  
+  @inline(__always)
+  var sessionToken: String? {
+    return { () -> String? in
+      if bridge.has_value_std__optional_std__string_(self.__sessionToken) {
+        let __unwrapped = bridge.get_std__optional_std__string_(self.__sessionToken)
+        return String(__unwrapped)
       } else {
         return nil
       }

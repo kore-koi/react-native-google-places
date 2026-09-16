@@ -43,6 +43,7 @@ export default defineConfig(
       globals: {
         __DEV__: 'readonly',
         atob: 'readonly',
+        console: 'readonly',
         require: 'readonly',
         setTimeout: 'readonly',
         requestIdleCallback: 'readonly',
