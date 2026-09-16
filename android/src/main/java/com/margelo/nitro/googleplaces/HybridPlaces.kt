@@ -2,9 +2,12 @@ package com.margelo.nitro.googleplaces
 
 import android.util.Log
 import com.margelo.nitro.NitroModules
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.libraries.places.api.model.CircularBounds
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.RectangularBounds
 
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
@@ -48,6 +51,48 @@ class HybridPlaces() : HybridPlacesSpec() {
                 .setTypesFilter(effectiveTypes)
 
             options?.countries?.let { requestBuilder.setCountries(it.toList()) }
+
+            options?.locationBias?.let { bias ->
+                bias.match(
+                    first = { circular ->
+                        requestBuilder.setLocationBias(
+                            CircularBounds.newInstance(
+                                LatLng(circular.latitude, circular.longitude),
+                                circular.radius
+                            )
+                        )
+                    },
+                    second = { rectangular ->
+                        requestBuilder.setLocationBias(
+                            RectangularBounds.newInstance(
+                                LatLng(rectangular.southWestLatitude, rectangular.southWestLongitude),
+                                LatLng(rectangular.northEastLatitude, rectangular.northEastLongitude)
+                            )
+                        )
+                    }
+                )
+            }
+
+            options?.locationRestriction?.let { restriction ->
+                restriction.match(
+                    first = { circular ->
+                        requestBuilder.setLocationRestriction(
+                            CircularBounds.newInstance(
+                                LatLng(circular.latitude, circular.longitude),
+                                circular.radius
+                            )
+                        )
+                    },
+                    second = { rectangular ->
+                        requestBuilder.setLocationRestriction(
+                            RectangularBounds.newInstance(
+                                LatLng(rectangular.southWestLatitude, rectangular.southWestLongitude),
+                                LatLng(rectangular.northEastLatitude, rectangular.northEastLongitude)
+                            )
+                        )
+                    }
+                )
+            }
 
             val response = placesClient.findAutocompletePredictions(requestBuilder.build()).await()
             
