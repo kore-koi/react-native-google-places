@@ -32,10 +32,25 @@ const createSessionToken = (): string => {
   })
 }
 
+let autocompleteWithDetailsWarned = false
+
 const places = {
   autocomplete: (query: string, options?: AutocompleteOptions) => native.autocomplete(query, toNative(options)),
   getPlace: (placeId: string, options?: GetPlaceOptions) => native.getPlace(placeId, options),
-  autocompleteWithDetails: (query: string, options?: AutocompleteOptions) => native.autocompleteWithDetails(query, toNative(options)),
+  /**
+   * @deprecated `autocompleteWithDetails` is deprecated and will be removed in a
+   * future version. Fetch details only for the place the user selects: call
+   * `autocomplete` and then `getPlace` on the chosen prediction. Fetching
+   * details for every prediction is expensive and cannot share a single billing
+   * session (Google allows one place-details request per session).
+   */
+  autocompleteWithDetails: (query: string, options?: AutocompleteOptions) => {
+    if (__DEV__ && !autocompleteWithDetailsWarned) {
+      autocompleteWithDetailsWarned = true
+      console.warn("[react-native-google-places] autocompleteWithDetails is deprecated and will be removed in newer versions")
+    }
+    return native.autocompleteWithDetails(query, toNative(options))
+  },
   createSessionToken,
 }
 
