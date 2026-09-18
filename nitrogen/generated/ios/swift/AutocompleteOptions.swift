@@ -18,7 +18,7 @@ public extension AutocompleteOptions {
   /**
    * Create a new instance of `AutocompleteOptions`.
    */
-  init(types: [String]?, countries: [String]?) {
+  init(types: [String]?, countries: [String]?, locationBias: Variant_CircularLocationBounds_RectangularLocationBounds?, locationRestriction: Variant_CircularLocationBounds_RectangularLocationBounds?) {
     self.init({ () -> bridge.std__optional_std__vector_std__string__ in
       if let __unwrappedValue = types {
         return bridge.create_std__optional_std__vector_std__string__({ () -> bridge.std__vector_std__string_ in
@@ -43,6 +43,32 @@ public extension AutocompleteOptions {
       } else {
         return .init()
       }
+    }(), { () -> bridge.std__optional_std__variant_CircularLocationBounds__RectangularLocationBounds__ in
+      if let __unwrappedValue = locationBias {
+        return bridge.create_std__optional_std__variant_CircularLocationBounds__RectangularLocationBounds__({ () -> bridge.std__variant_CircularLocationBounds__RectangularLocationBounds_ in
+          switch __unwrappedValue {
+            case .first(let __value):
+              return bridge.create_std__variant_CircularLocationBounds__RectangularLocationBounds_(__value)
+            case .second(let __value):
+              return bridge.create_std__variant_CircularLocationBounds__RectangularLocationBounds_(__value)
+          }
+        }().variant)
+      } else {
+        return .init()
+      }
+    }(), { () -> bridge.std__optional_std__variant_CircularLocationBounds__RectangularLocationBounds__ in
+      if let __unwrappedValue = locationRestriction {
+        return bridge.create_std__optional_std__variant_CircularLocationBounds__RectangularLocationBounds__({ () -> bridge.std__variant_CircularLocationBounds__RectangularLocationBounds_ in
+          switch __unwrappedValue {
+            case .first(let __value):
+              return bridge.create_std__variant_CircularLocationBounds__RectangularLocationBounds_(__value)
+            case .second(let __value):
+              return bridge.create_std__variant_CircularLocationBounds__RectangularLocationBounds_(__value)
+          }
+        }().variant)
+      } else {
+        return .init()
+      }
     }())
   }
 
@@ -64,6 +90,54 @@ public extension AutocompleteOptions {
       if bridge.has_value_std__optional_std__vector_std__string__(self.__countries) {
         let __unwrapped = bridge.get_std__optional_std__vector_std__string__(self.__countries)
         return __unwrapped.map({ __item in String(__item) })
+      } else {
+        return nil
+      }
+    }()
+  }
+  
+  @inline(__always)
+  var locationBias: Variant_CircularLocationBounds_RectangularLocationBounds? {
+    return { () -> Variant_CircularLocationBounds_RectangularLocationBounds? in
+      if bridge.has_value_std__optional_std__variant_CircularLocationBounds__RectangularLocationBounds__(self.__locationBias) {
+        let __unwrapped = bridge.get_std__optional_std__variant_CircularLocationBounds__RectangularLocationBounds__(self.__locationBias)
+        return { () -> Variant_CircularLocationBounds_RectangularLocationBounds in
+          let __variant = bridge.std__variant_CircularLocationBounds__RectangularLocationBounds_(__unwrapped)
+          switch __variant.index() {
+            case 0:
+              let __actual = __variant.get_0()
+              return .first(__actual)
+            case 1:
+              let __actual = __variant.get_1()
+              return .second(__actual)
+            default:
+              fatalError("Variant can never have index \(__variant.index())!")
+          }
+        }()
+      } else {
+        return nil
+      }
+    }()
+  }
+  
+  @inline(__always)
+  var locationRestriction: Variant_CircularLocationBounds_RectangularLocationBounds? {
+    return { () -> Variant_CircularLocationBounds_RectangularLocationBounds? in
+      if bridge.has_value_std__optional_std__variant_CircularLocationBounds__RectangularLocationBounds__(self.__locationRestriction) {
+        let __unwrapped = bridge.get_std__optional_std__variant_CircularLocationBounds__RectangularLocationBounds__(self.__locationRestriction)
+        return { () -> Variant_CircularLocationBounds_RectangularLocationBounds in
+          let __variant = bridge.std__variant_CircularLocationBounds__RectangularLocationBounds_(__unwrapped)
+          switch __variant.index() {
+            case 0:
+              let __actual = __variant.get_0()
+              return .first(__actual)
+            case 1:
+              let __actual = __variant.get_1()
+              return .second(__actual)
+            default:
+              fatalError("Variant can never have index \(__variant.index())!")
+          }
+        }()
       } else {
         return nil
       }

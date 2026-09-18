@@ -10,8 +10,14 @@
 #include <fbjni/fbjni.h>
 #include "AutocompleteOptions.hpp"
 
+#include "CircularLocationBounds.hpp"
+#include "JCircularLocationBounds.hpp"
+#include "JRectangularLocationBounds.hpp"
+#include "JVariant_CircularLocationBounds_RectangularLocationBounds.hpp"
+#include "RectangularLocationBounds.hpp"
 #include <optional>
 #include <string>
+#include <variant>
 #include <vector>
 
 namespace margelo::nitro::googleplaces {
@@ -37,6 +43,10 @@ namespace margelo::nitro::googleplaces {
       jni::local_ref<jni::JArrayClass<jni::JString>> types = this->getFieldValue(fieldTypes);
       static const auto fieldCountries = clazz->getField<jni::JArrayClass<jni::JString>>("countries");
       jni::local_ref<jni::JArrayClass<jni::JString>> countries = this->getFieldValue(fieldCountries);
+      static const auto fieldLocationBias = clazz->getField<JVariant_CircularLocationBounds_RectangularLocationBounds>("locationBias");
+      jni::local_ref<JVariant_CircularLocationBounds_RectangularLocationBounds> locationBias = this->getFieldValue(fieldLocationBias);
+      static const auto fieldLocationRestriction = clazz->getField<JVariant_CircularLocationBounds_RectangularLocationBounds>("locationRestriction");
+      jni::local_ref<JVariant_CircularLocationBounds_RectangularLocationBounds> locationRestriction = this->getFieldValue(fieldLocationRestriction);
       return AutocompleteOptions(
         types != nullptr ? std::make_optional([&]() {
           size_t __size = types->size();
@@ -57,7 +67,9 @@ namespace margelo::nitro::googleplaces {
             __vector.push_back(__element->toStdString());
           }
           return __vector;
-        }()) : std::nullopt
+        }()) : std::nullopt,
+        locationBias != nullptr ? std::make_optional(locationBias->toCpp()) : std::nullopt,
+        locationRestriction != nullptr ? std::make_optional(locationRestriction->toCpp()) : std::nullopt
       );
     }
 
@@ -67,7 +79,7 @@ namespace margelo::nitro::googleplaces {
      */
     [[maybe_unused]]
     static jni::local_ref<JAutocompleteOptions::javaobject> fromCpp(const AutocompleteOptions& value) {
-      using JSignature = JAutocompleteOptions(jni::alias_ref<jni::JArrayClass<jni::JString>>, jni::alias_ref<jni::JArrayClass<jni::JString>>);
+      using JSignature = JAutocompleteOptions(jni::alias_ref<jni::JArrayClass<jni::JString>>, jni::alias_ref<jni::JArrayClass<jni::JString>>, jni::alias_ref<JVariant_CircularLocationBounds_RectangularLocationBounds>, jni::alias_ref<JVariant_CircularLocationBounds_RectangularLocationBounds>);
       static const auto clazz = javaClassStatic();
       static const auto create = clazz->getStaticMethod<JSignature>("fromCpp");
       return create(
@@ -91,7 +103,9 @@ namespace margelo::nitro::googleplaces {
             __array->setElement(__i, *__elementJni);
           }
           return __array;
-        }() : nullptr
+        }() : nullptr,
+        value.locationBias.has_value() ? JVariant_CircularLocationBounds_RectangularLocationBounds::fromCpp(value.locationBias.value()) : nullptr,
+        value.locationRestriction.has_value() ? JVariant_CircularLocationBounds_RectangularLocationBounds::fromCpp(value.locationRestriction.value()) : nullptr
       );
     }
   };

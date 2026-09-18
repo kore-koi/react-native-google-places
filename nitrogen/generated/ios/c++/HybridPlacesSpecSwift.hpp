@@ -16,6 +16,10 @@ namespace NitroGooglePlaces { class HybridPlacesSpec_cxx; }
 namespace margelo::nitro::googleplaces { struct PlaceAutocompleteResult; }
 // Forward declaration of `AutocompleteOptions` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct AutocompleteOptions; }
+// Forward declaration of `CircularLocationBounds` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct CircularLocationBounds; }
+// Forward declaration of `RectangularLocationBounds` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct RectangularLocationBounds; }
 // Forward declaration of `PlaceDetails` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct PlaceDetails; }
 // Forward declaration of `AddressComponent` to properly resolve imports.
@@ -27,9 +31,11 @@ namespace margelo::nitro::googleplaces { struct AddressComponent; }
 #include <string>
 #include "AutocompleteOptions.hpp"
 #include <optional>
+#include "CircularLocationBounds.hpp"
+#include "RectangularLocationBounds.hpp"
+#include <variant>
 #include <NitroModules/Null.hpp>
 #include "PlaceDetails.hpp"
-#include <variant>
 #include "AddressComponent.hpp"
 
 #include "NitroGooglePlaces-Swift-Cxx-Umbrella.hpp"

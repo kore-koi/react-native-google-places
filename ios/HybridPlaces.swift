@@ -1,4 +1,5 @@
 import Foundation
+import CoreLocation
 import NitroModules
 import GooglePlaces
 
@@ -25,6 +26,35 @@ class HybridPlaces : HybridPlacesSpec {
             filter.types = options?.types ?? ["route", "street_address", "premise", "subpremise", "geocode"]
             if let countries = options?.countries {
               filter.countries = countries
+            }
+            func toLocationOption(
+              _ bounds: Variant_CircularLocationBounds_RectangularLocationBounds
+            ) -> any GMSPlaceLocationBias & GMSPlaceLocationRestriction {
+              switch bounds {
+              case .first(let circular):
+                let center = CLLocationCoordinate2D(
+                  latitude: circular.latitude,
+                  longitude: circular.longitude
+                )
+                return GMSPlaceCircularLocationOption(center, circular.radius)
+              case .second(let rectangular):
+                let northEast = CLLocationCoordinate2D(
+                  latitude: rectangular.northEastLatitude,
+                  longitude: rectangular.northEastLongitude
+                )
+                let southWest = CLLocationCoordinate2D(
+                  latitude: rectangular.southWestLatitude,
+                  longitude: rectangular.southWestLongitude
+                )
+                return GMSPlaceRectangularLocationOption(northEast, southWest)
+              }
+            }
+
+            if let locationBias = options?.locationBias {
+              filter.locationBias = toLocationOption(locationBias)
+            }
+            if let locationRestriction = options?.locationRestriction {
+              filter.locationRestriction = toLocationOption(locationRestriction)
             }
 
             let request = GMSAutocompleteRequest(query: query)

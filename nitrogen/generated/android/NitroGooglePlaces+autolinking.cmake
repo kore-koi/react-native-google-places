@@ -37,6 +37,7 @@ target_sources(
   # Android-specific Nitrogen C++ sources
   ../nitrogen/generated/android/c++/JHybridPlacesSpec.cpp
   ../nitrogen/generated/android/c++/JVariant_NullType_PlaceDetails.cpp
+  ../nitrogen/generated/android/c++/JVariant_CircularLocationBounds_RectangularLocationBounds.cpp
 )
 
 # From node_modules/react-native/ReactAndroid/cmake-utils/folly-flags.cmake

@@ -15,6 +15,10 @@ namespace margelo::nitro::googleplaces { struct PlaceDetails; }
 namespace margelo::nitro::googleplaces { struct AddressComponent; }
 // Forward declaration of `AutocompleteOptions` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct AutocompleteOptions; }
+// Forward declaration of `CircularLocationBounds` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct CircularLocationBounds; }
+// Forward declaration of `RectangularLocationBounds` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct RectangularLocationBounds; }
 
 #include "PlaceAutocompleteResult.hpp"
 #include <vector>
@@ -33,6 +37,11 @@ namespace margelo::nitro::googleplaces { struct AutocompleteOptions; }
 #include "AutocompleteOptions.hpp"
 #include <optional>
 #include "JAutocompleteOptions.hpp"
+#include "CircularLocationBounds.hpp"
+#include "RectangularLocationBounds.hpp"
+#include "JVariant_CircularLocationBounds_RectangularLocationBounds.hpp"
+#include "JCircularLocationBounds.hpp"
+#include "JRectangularLocationBounds.hpp"
 
 namespace margelo::nitro::googleplaces {
 

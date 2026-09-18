@@ -75,6 +75,21 @@ const results2 = await places.autocomplete('Roma', {
 // Autocomplete restricted to one or more countries (ISO 3166-1 Alpha-2, max 5)
 const results3 = await places.autocomplete('Roma', { countries: ['it'] })
 
+// Bias results towards an area (soft: prefers, does not exclude)
+import places, { CircularLocationBounds, RectangularLocationBounds } from '@korekoi/react-native-google-places'
+
+await places.autocomplete('Roma', {
+  locationBias: new CircularLocationBounds({ latitude: 45.46, longitude: 9.19, radius: 5000 }),
+})
+
+// Restrict results strictly within an area (hard: excludes the rest)
+await places.autocomplete('Roma', {
+  locationRestriction: new RectangularLocationBounds({
+    southWestLatitude: 45.40, southWestLongitude: 9.10,
+    northEastLatitude: 45.52, northEastLongitude: 9.28,
+  }),
+})
+
 // Autocomplete with full place details
 const details = await places.autocompleteWithDetails('1600 Amphitheatre Pkwy')
 // details: Array<PlaceDetails>
@@ -96,6 +111,8 @@ Returns a list of autocomplete predictions.
 - `options` *(optional)* – an `AutocompleteOptions` object:
   - `types` *(optional)* – array of [place type filters](https://developers.google.com/maps/documentation/places/web-service/supported_types). Defaults to `["route", "street_address", "premise", "subpremise", "geocode"]`.
   - `countries` *(optional)* – array of [ISO 3166-1 Alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country codes to restrict results to (e.g. `["it", "fr"]`). Max 5. When omitted, results are not restricted by country.
+  - `locationBias` *(optional)* – `CircularLocationBounds` or `RectangularLocationBounds`. Prefers results in the area without excluding others.
+  - `locationRestriction` *(optional)* – `CircularLocationBounds` or `RectangularLocationBounds`. Excludes results outside the area.
 
 **Returns:** `Promise<PlaceAutocompleteResult[]>`
 
@@ -151,6 +168,10 @@ interface AddressComponent {
   short_name: string
   types: string[]
 }
+
+// Both bounds work as either locationBias or locationRestriction.
+new CircularLocationBounds({ latitude, longitude, radius }) // radius in meters
+new RectangularLocationBounds({ southWestLatitude, southWestLongitude, northEastLatitude, northEastLongitude })
 ```
 
 ## Notes

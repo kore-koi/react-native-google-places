@@ -12,12 +12,16 @@
 namespace margelo::nitro::googleplaces { struct AddressComponent; }
 // Forward declaration of `AutocompleteOptions` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct AutocompleteOptions; }
+// Forward declaration of `CircularLocationBounds` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct CircularLocationBounds; }
 // Forward declaration of `HybridPlacesSpec` to properly resolve imports.
 namespace margelo::nitro::googleplaces { class HybridPlacesSpec; }
 // Forward declaration of `PlaceAutocompleteResult` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct PlaceAutocompleteResult; }
 // Forward declaration of `PlaceDetails` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct PlaceDetails; }
+// Forward declaration of `RectangularLocationBounds` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct RectangularLocationBounds; }
 
 // Forward declarations of Swift defined types
 // Forward declaration of `HybridPlacesSpec_cxx` to properly resolve imports.
@@ -26,9 +30,11 @@ namespace NitroGooglePlaces { class HybridPlacesSpec_cxx; }
 // Include C++ defined types
 #include "AddressComponent.hpp"
 #include "AutocompleteOptions.hpp"
+#include "CircularLocationBounds.hpp"
 #include "HybridPlacesSpec.hpp"
 #include "PlaceAutocompleteResult.hpp"
 #include "PlaceDetails.hpp"
+#include "RectangularLocationBounds.hpp"
 #include <NitroModules/Null.hpp>
 #include <NitroModules/Promise.hpp>
 #include <NitroModules/PromiseHolder.hpp>
@@ -137,6 +143,50 @@ namespace margelo::nitro::googleplaces::bridge::swift {
     return optional.has_value();
   }
   inline std::vector<std::string> get_std__optional_std__vector_std__string__(const std::optional<std::vector<std::string>>& optional) noexcept {
+    return *optional;
+  }
+  
+  // pragma MARK: std::variant<CircularLocationBounds, RectangularLocationBounds>
+  /**
+   * Wrapper struct for `std::variant<CircularLocationBounds, RectangularLocationBounds>`.
+   * std::variant cannot be used in Swift because of a Swift bug.
+   * Not even specializing it works. So we create a wrapper struct.
+   */
+  struct std__variant_CircularLocationBounds__RectangularLocationBounds_ final {
+    std::variant<CircularLocationBounds, RectangularLocationBounds> variant;
+    std__variant_CircularLocationBounds__RectangularLocationBounds_(std::variant<CircularLocationBounds, RectangularLocationBounds> variant): variant(variant) { }
+    operator std::variant<CircularLocationBounds, RectangularLocationBounds>() const noexcept {
+      return variant;
+    }
+    inline size_t index() const noexcept {
+      return variant.index();
+    }
+    inline CircularLocationBounds get_0() const noexcept {
+      return std::get<0>(variant);
+    }
+    inline RectangularLocationBounds get_1() const noexcept {
+      return std::get<1>(variant);
+    }
+  };
+  inline std__variant_CircularLocationBounds__RectangularLocationBounds_ create_std__variant_CircularLocationBounds__RectangularLocationBounds_(const CircularLocationBounds& value) noexcept {
+    return std__variant_CircularLocationBounds__RectangularLocationBounds_(value);
+  }
+  inline std__variant_CircularLocationBounds__RectangularLocationBounds_ create_std__variant_CircularLocationBounds__RectangularLocationBounds_(const RectangularLocationBounds& value) noexcept {
+    return std__variant_CircularLocationBounds__RectangularLocationBounds_(value);
+  }
+  
+  // pragma MARK: std::optional<std::variant<CircularLocationBounds, RectangularLocationBounds>>
+  /**
+   * Specialized version of `std::optional<std::variant<CircularLocationBounds, RectangularLocationBounds>>`.
+   */
+  using std__optional_std__variant_CircularLocationBounds__RectangularLocationBounds__ = std::optional<std::variant<CircularLocationBounds, RectangularLocationBounds>>;
+  inline std::optional<std::variant<CircularLocationBounds, RectangularLocationBounds>> create_std__optional_std__variant_CircularLocationBounds__RectangularLocationBounds__(const std::variant<CircularLocationBounds, RectangularLocationBounds>& value) noexcept {
+    return std::optional<std::variant<CircularLocationBounds, RectangularLocationBounds>>(value);
+  }
+  inline bool has_value_std__optional_std__variant_CircularLocationBounds__RectangularLocationBounds__(const std::optional<std::variant<CircularLocationBounds, RectangularLocationBounds>>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline std::variant<CircularLocationBounds, RectangularLocationBounds> get_std__optional_std__variant_CircularLocationBounds__RectangularLocationBounds__(const std::optional<std::variant<CircularLocationBounds, RectangularLocationBounds>>& optional) noexcept {
     return *optional;
   }
   
