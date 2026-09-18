@@ -20,6 +20,30 @@ class HybridPlaces() : HybridPlacesSpec() {
 
     private val placesClient: PlacesClient
 
+    // Accessed only inside synchronized(sessionTokens) in sessionTokenFor, so a
+    // plain map is enough (getOrPut + remove is a compound op that a
+    // synchronizedMap would not make atomic anyway). Insertion-ordered so the
+    // eldest abandoned session is evicted once the cap is reached.
+    private val sessionTokens =
+        object : LinkedHashMap<String, AutocompleteSessionToken>() {
+            override fun removeEldestEntry(
+                eldest: MutableMap.MutableEntry<String, AutocompleteSessionToken>
+            ): Boolean = size > MAX_SESSION_TOKENS
+        }
+
+    private fun sessionTokenFor(sessionId: String?, consume: Boolean): AutocompleteSessionToken {
+        if (sessionId == null) {
+            return AutocompleteSessionToken.newInstance()
+        }
+        synchronized(sessionTokens) {
+            val token = sessionTokens.getOrPut(sessionId) { AutocompleteSessionToken.newInstance() }
+            if (consume) {
+                sessionTokens.remove(sessionId)
+            }
+            return token
+        }
+    }
+
     init {
         val context =
             NitroModules.applicationContext
@@ -43,7 +67,7 @@ class HybridPlaces() : HybridPlacesSpec() {
 
     override fun autocomplete(query: String, options: AutocompleteOptions?): Promise<Array<PlaceAutocompleteResult>> {
         return Promise.async {
-            val token = AutocompleteSessionToken.newInstance()
+            val token = sessionTokenFor(options?.sessionToken, consume = false)
             val effectiveTypes = options?.types?.toList() ?: listOf("route", "street_address", "premise", "subpremise", "geocode")
             val requestBuilder = FindAutocompletePredictionsRequest.builder()
                 .setSessionToken(token)
@@ -105,7 +129,7 @@ class HybridPlaces() : HybridPlacesSpec() {
         }
     }
 
-    override fun getPlace(placeId: String): Promise<Variant_NullType_PlaceDetails> {
+    override fun getPlace(placeId: String, options: GetPlaceOptions?): Promise<Variant_NullType_PlaceDetails> {
         return Promise.async {
             try {
                 val placeFields = listOf(
@@ -117,7 +141,7 @@ class HybridPlaces() : HybridPlacesSpec() {
                 )
 
                 val request = FetchPlaceRequest.builder(placeId, placeFields)
-                    .setSessionToken(AutocompleteSessionToken.newInstance())
+                    .setSessionToken(sessionTokenFor(options?.sessionToken, consume = true))
                     .build()
 
                 val response = placesClient.fetchPlace(request).await()
@@ -151,9 +175,13 @@ class HybridPlaces() : HybridPlacesSpec() {
     override fun autocompleteWithDetails(query: String, options: AutocompleteOptions?): Promise<Array<PlaceDetails>> {
         return Promise.async {
             val predictions = autocomplete(query, options).await()
-            val detailedResults = predictions.mapNotNull { prediction ->
+            val detailedResults = predictions.mapIndexedNotNull { index, prediction ->
                 try {
-                    val variant = getPlace(prediction.placeId).await()
+                    // Only the first detail fetch closes the shared session; the
+                    // rest use their own single-use tokens so we don't reuse a
+                    // consumed one.
+                    val detailToken = if (index == 0) options?.sessionToken else null
+                    val variant = getPlace(prediction.placeId, GetPlaceOptions(detailToken)).await()
                     variant.asSecondOrNull()
                 } catch (e: Exception) {
                     null
@@ -161,5 +189,9 @@ class HybridPlaces() : HybridPlacesSpec() {
             }
             detailedResults.toTypedArray()
         }
+    }
+
+    companion object {
+        private const val MAX_SESSION_TOKENS = 100
     }
 }

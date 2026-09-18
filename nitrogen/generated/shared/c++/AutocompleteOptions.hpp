@@ -51,10 +51,11 @@ namespace margelo::nitro::googleplaces {
     std::optional<std::vector<std::string>> countries     SWIFT_PRIVATE;
     std::optional<std::variant<CircularLocationBounds, RectangularLocationBounds>> locationBias     SWIFT_PRIVATE;
     std::optional<std::variant<CircularLocationBounds, RectangularLocationBounds>> locationRestriction     SWIFT_PRIVATE;
+    std::optional<std::string> sessionToken     SWIFT_PRIVATE;
 
   public:
     AutocompleteOptions() = default;
-    explicit AutocompleteOptions(std::optional<std::vector<std::string>> types, std::optional<std::vector<std::string>> countries, std::optional<std::variant<CircularLocationBounds, RectangularLocationBounds>> locationBias, std::optional<std::variant<CircularLocationBounds, RectangularLocationBounds>> locationRestriction): types(types), countries(countries), locationBias(locationBias), locationRestriction(locationRestriction) {}
+    explicit AutocompleteOptions(std::optional<std::vector<std::string>> types, std::optional<std::vector<std::string>> countries, std::optional<std::variant<CircularLocationBounds, RectangularLocationBounds>> locationBias, std::optional<std::variant<CircularLocationBounds, RectangularLocationBounds>> locationRestriction, std::optional<std::string> sessionToken): types(types), countries(countries), locationBias(locationBias), locationRestriction(locationRestriction), sessionToken(sessionToken) {}
 
   public:
     friend bool operator==(const AutocompleteOptions& lhs, const AutocompleteOptions& rhs) = default;
@@ -73,7 +74,8 @@ namespace margelo::nitro {
         JSIConverter<std::optional<std::vector<std::string>>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "types"))),
         JSIConverter<std::optional<std::vector<std::string>>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "countries"))),
         JSIConverter<std::optional<std::variant<margelo::nitro::googleplaces::CircularLocationBounds, margelo::nitro::googleplaces::RectangularLocationBounds>>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "locationBias"))),
-        JSIConverter<std::optional<std::variant<margelo::nitro::googleplaces::CircularLocationBounds, margelo::nitro::googleplaces::RectangularLocationBounds>>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "locationRestriction")))
+        JSIConverter<std::optional<std::variant<margelo::nitro::googleplaces::CircularLocationBounds, margelo::nitro::googleplaces::RectangularLocationBounds>>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "locationRestriction"))),
+        JSIConverter<std::optional<std::string>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "sessionToken")))
       );
     }
     static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::googleplaces::AutocompleteOptions& arg) {
@@ -82,6 +84,7 @@ namespace margelo::nitro {
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "countries"), JSIConverter<std::optional<std::vector<std::string>>>::toJSI(runtime, arg.countries));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "locationBias"), JSIConverter<std::optional<std::variant<margelo::nitro::googleplaces::CircularLocationBounds, margelo::nitro::googleplaces::RectangularLocationBounds>>>::toJSI(runtime, arg.locationBias));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "locationRestriction"), JSIConverter<std::optional<std::variant<margelo::nitro::googleplaces::CircularLocationBounds, margelo::nitro::googleplaces::RectangularLocationBounds>>>::toJSI(runtime, arg.locationRestriction));
+      obj.setProperty(runtime, PropNameIDCache::get(runtime, "sessionToken"), JSIConverter<std::optional<std::string>>::toJSI(runtime, arg.sessionToken));
       return obj;
     }
     static inline bool canConvert(jsi::Runtime& runtime, const jsi::Value& value) {
@@ -96,6 +99,7 @@ namespace margelo::nitro {
       if (!JSIConverter<std::optional<std::vector<std::string>>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "countries")))) return false;
       if (!JSIConverter<std::optional<std::variant<margelo::nitro::googleplaces::CircularLocationBounds, margelo::nitro::googleplaces::RectangularLocationBounds>>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "locationBias")))) return false;
       if (!JSIConverter<std::optional<std::variant<margelo::nitro::googleplaces::CircularLocationBounds, margelo::nitro::googleplaces::RectangularLocationBounds>>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "locationRestriction")))) return false;
+      if (!JSIConverter<std::optional<std::string>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "sessionToken")))) return false;
       return true;
     }
   };

@@ -5,6 +5,17 @@ import GooglePlaces
 
 
 class HybridPlaces : HybridPlacesSpec {
+      /// Native session tokens keyed by the caller-provided session id, so a
+      /// single search reuses one token across keystrokes instead of minting a
+      /// fresh (separately billed) token on every call. Accessed only on the
+      /// main queue, matching where the Places SDK requests are issued.
+      private var sessionTokens: [String: GMSAutocompleteSessionToken] = [:]
+      /// Guards against unbounded growth from abandoned searches (a session that
+      /// never reaches `getPlace`). Tokens also expire server-side after a few
+      /// minutes, so evicting the oldest here is safe.
+      private var sessionTokenOrder: [String] = []
+      private let maxSessionTokens = 100
+
       override init() {
           super.init()
         DispatchQueue.main.async {
@@ -16,12 +27,42 @@ class HybridPlaces : HybridPlacesSpec {
                 }
             }
       }
-  
+
+    /// Returns the session token to use for a request. When `sessionId` is nil a
+    /// fresh single-use token is returned (legacy behaviour). Otherwise the token
+    /// for that id is reused, creating one on first use. When `consume` is true
+    /// (a `getPlace` call) the token is removed afterwards, closing the session.
+    private func sessionToken(for sessionId: String?, consume: Bool) -> GMSAutocompleteSessionToken {
+      guard let sessionId = sessionId else {
+        return GMSAutocompleteSessionToken()
+      }
+
+      let token: GMSAutocompleteSessionToken
+      if let existing = sessionTokens[sessionId] {
+        token = existing
+      } else {
+        token = GMSAutocompleteSessionToken()
+        sessionTokens[sessionId] = token
+        sessionTokenOrder.append(sessionId)
+        if sessionTokenOrder.count > maxSessionTokens {
+          let oldest = sessionTokenOrder.removeFirst()
+          sessionTokens.removeValue(forKey: oldest)
+        }
+      }
+
+      if consume {
+        sessionTokens.removeValue(forKey: sessionId)
+        sessionTokenOrder.removeAll { $0 == sessionId }
+      }
+
+      return token
+    }
+
     func autocomplete(query: String, options: AutocompleteOptions?) throws -> Promise<[PlaceAutocompleteResult]> {
       return Promise.async {
         try await withCheckedThrowingContinuation { continuation in
           DispatchQueue.main.async {
-            let token = GMSAutocompleteSessionToken()
+            let token = self.sessionToken(for: options?.sessionToken, consume: false)
             let filter = GMSAutocompleteFilter()
             filter.types = options?.types ?? ["route", "street_address", "premise", "subpremise", "geocode"]
             if let countries = options?.countries {
@@ -92,7 +133,7 @@ class HybridPlaces : HybridPlacesSpec {
       }
     }
 
-    func getPlace(placeId: String) throws -> Promise<Variant_NullType_PlaceDetails> {
+    func getPlace(placeId: String, options: GetPlaceOptions?) throws -> Promise<Variant_NullType_PlaceDetails> {
       return Promise.async {
         try await withCheckedThrowingContinuation { continuation in
           DispatchQueue.main.async {
@@ -103,7 +144,7 @@ class HybridPlaces : HybridPlacesSpec {
                 GMSPlaceProperty.addressComponents,
                 GMSPlaceProperty.coordinate
             ].map {$0.rawValue}
-            let token = GMSAutocompleteSessionToken()
+            let token = self.sessionToken(for: options?.sessionToken, consume: true)
             let fetchPlaceRequest = GMSFetchPlaceRequest(placeID: placeId, placeProperties: myProperties, sessionToken: token)
                     
             GMSPlacesClient.shared().fetchPlace(with: fetchPlaceRequest) { place, error in
@@ -154,8 +195,11 @@ class HybridPlaces : HybridPlacesSpec {
             
             var detailedResults: [PlaceDetails] = []
             
-            for prediction in predictions {
-                let placeResult = try await self.getPlace(placeId: prediction.placeId).await()
+            for (index, prediction) in predictions.enumerated() {
+                // Only the first detail fetch closes the shared session; the rest
+                // use their own single-use tokens so we don't reuse a consumed one.
+                let detailToken = index == 0 ? options?.sessionToken : nil
+                let placeResult = try await self.getPlace(placeId: prediction.placeId, options: GetPlaceOptions(sessionToken: detailToken)).await()
                 
                 if case .second(let details) = placeResult {
                   detailedResults.append(details)

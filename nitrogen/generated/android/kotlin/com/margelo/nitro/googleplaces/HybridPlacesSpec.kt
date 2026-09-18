@@ -53,7 +53,7 @@ abstract class HybridPlacesSpec: HybridObject() {
   
   @DoNotStrip
   @Keep
-  abstract fun getPlace(placeId: String): Promise<Variant_NullType_PlaceDetails>
+  abstract fun getPlace(placeId: String, options: GetPlaceOptions?): Promise<Variant_NullType_PlaceDetails>
   
   @DoNotStrip
   @Keep

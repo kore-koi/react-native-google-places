@@ -24,6 +24,8 @@ namespace margelo::nitro::googleplaces { struct RectangularLocationBounds; }
 namespace margelo::nitro::googleplaces { struct PlaceDetails; }
 // Forward declaration of `AddressComponent` to properly resolve imports.
 namespace margelo::nitro::googleplaces { struct AddressComponent; }
+// Forward declaration of `GetPlaceOptions` to properly resolve imports.
+namespace margelo::nitro::googleplaces { struct GetPlaceOptions; }
 
 #include "PlaceAutocompleteResult.hpp"
 #include <vector>
@@ -37,6 +39,7 @@ namespace margelo::nitro::googleplaces { struct AddressComponent; }
 #include <NitroModules/Null.hpp>
 #include "PlaceDetails.hpp"
 #include "AddressComponent.hpp"
+#include "GetPlaceOptions.hpp"
 
 #include "NitroGooglePlaces-Swift-Cxx-Umbrella.hpp"
 
@@ -96,8 +99,8 @@ namespace margelo::nitro::googleplaces {
       auto __value = std::move(__result.value());
       return __value;
     }
-    inline std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>> getPlace(const std::string& placeId) override {
-      auto __result = _swiftPart.getPlace(placeId);
+    inline std::shared_ptr<Promise<std::variant<nitro::NullType, PlaceDetails>>> getPlace(const std::string& placeId, const std::optional<GetPlaceOptions>& options) override {
+      auto __result = _swiftPart.getPlace(placeId, options);
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }
